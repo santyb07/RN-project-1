@@ -20,8 +20,9 @@ export type RootStackParamList={
   // },
   Onboarding:undefined,
   Login:undefined,
-  VerifyOtp:undefined,
-
+  VerifyOtp:{
+    mobileNumber:string
+  },
 }
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();

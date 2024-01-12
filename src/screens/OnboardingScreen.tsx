@@ -23,29 +23,23 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
     }
     const Next=({...props}:DoneButtonProps)=>{
         return(
-            <TouchableOpacity
-            style={{marginHorizontal:30,width:'70%',alignItems:'flex-end',justifyContent:'center'}}
-            {...props}>
-             <View style={styles.btnView}>
-                <FontAwesomeIcon name="arrow-circle-right" color={"#ffffff"} size={60} />
-        {/* <Text style={styles.btnText}>
-          {'->'}
-        </Text> */}
-      </View>
-        </TouchableOpacity>
+        
+         <TouchableOpacity className='mx-10' {...props}>
+         {/* style={{marginHorizontal:30,width:'70%',alignItems:'flex-end',justifyContent:'center'}}  */}
+          <View style={styles.btnView}>
+             <FontAwesomeIcon name="arrow-circle-right" color={"#ffffff"} size={60} />
+         </View>
+     </TouchableOpacity>
         )
     }
     const Done=({...props}:DoneButtonProps)=>{
         return(
-            <TouchableOpacity
-            style={{marginHorizontal:30,width:'70%',alignItems:'flex-end',justifyContent:'center'}}
+            <TouchableOpacity className='mx-10'
+            // style={{marginHorizontal:30,width:'70%',alignItems:'flex-end',justifyContent:'center'}}
             {...props}>
              <View style={styles.btnView}>
                 <FontAwesomeIcon name="check-circle" color={"#ffffff"} size={60} />
-        {/* <Text style={styles.btnText}>
-          {'->'}
-        </Text> */}
-      </View>
+            </View>
         </TouchableOpacity>
         )
     }
@@ -76,7 +70,8 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
     // }
     
   return (
-      <View style={styles.container}>
+    //   <View style={styles.container}>
+        <View className="flex-1">
         <StatusBar backgroundColor="#4473c2" barStyle='light-content'/>
         <Onboarding
         onDone={handleDone}
