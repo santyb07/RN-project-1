@@ -1,40 +1,45 @@
-import React,{useContext, useEffect, useState} from 'react'
-import {NavigationContainer, NavigationProp} from '@react-navigation/native'
+import React, { useEffect } from 'react'
+import {NavigationContainer} from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import HomeScreen from '../screens/HomeScreen';
-import OnboardingScreen from '../screens/OnboardingScreen';
-import { getItem } from '../utils/asyncStorage';
-import Login from '../screens/Login'
-import VerifyOtp from '../screens/VerifyOtp';
-import { AuthContext } from '../context/AuthContext';
 import AppStack from './AppStack';
 import AuthStack from './AuthStack';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store/store';
+import SplashScreen from 'react-native-splash-screen';
 
 // export type ScreenNames = ["Home", "Onboarding"] // type these manually
 // export type RootStackParamList = Record<ScreenNames[number], {onboarded:boolean}>;
 // export type StackNavigation = NavigationProp<RootStackParamList>;
 
 export type RootStackParamList={
-  // Home:{
-  //   onboarded:boolean
-  // },
   Onboarding:undefined,
   Login:undefined,
   VerifyOtp:{
     mobileNumber:string
   },
+  AccountOverview:undefined,
+  Templates:undefined,
+  AdsPackage:undefined,
+  AllLeads:undefined,
+  BusinessDetails: undefined
+  
 }
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const appNavigation = () => {
-  const {isLoading, userToken} = useContext(AuthContext);
+  const isUserLoggedIn = useSelector((state:RootState)=>state.auth.userLoggedIn)
+  // const {isLoading, userToken} = useContext(AuthContext);
 
- 
+  useEffect(()=>{
+    if(isUserLoggedIn){
+      SplashScreen.hide(); 
+    }
+  },[])
   return (
     <NavigationContainer>
       {
-        userToken ? <AppStack/> : <AuthStack/>
+        isUserLoggedIn ? <AppStack/> : <AuthStack/>
       }
     </NavigationContainer>
   )

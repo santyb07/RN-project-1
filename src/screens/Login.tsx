@@ -1,10 +1,13 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import React,{ useRef, useState} from 'react'
+import React,{ useEffect, useRef, useState} from 'react'
 import { Button, Dimensions, KeyboardAvoidingView, StatusBar, ViewStyle, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { RootStackParamList } from '../navigation/appNavigation'
 import PhoneInput from 'react-native-phone-input'
 import LottieView from 'lottie-react-native'
 import CheckBox from '@react-native-community/checkbox';
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { removeLaunch } from '../redux/features/onboardSlice'
+import HeaderBar from './components/HeaderBar'
 // import { AuthContext } from '../context/AuthContext'
 // import { styled } from 'nativewind'
 // import { SafeAreaView } from 'react-native-safe-area-context'
@@ -14,7 +17,7 @@ import CheckBox from '@react-native-community/checkbox';
 
 interface LoginScreenProps{
     navigation: StackNavigationProp<RootStackParamList,"Login">,
-  }
+}
 
 
 const Login = ({navigation}:LoginScreenProps) => {
@@ -22,15 +25,15 @@ const Login = ({navigation}:LoginScreenProps) => {
   const [toggleCheckBox, setToggleCheckBox] = useState<boolean>(true)
 
   let disableLogin= (number.length>9 && toggleCheckBox==true) ? true:false;
-  console.warn(disableLogin);
+  // console.warn(disableLogin);
   const onChanged =(text:string)=>{
     let mobile= text.replace(/[^0-9]/g, '');
     setChangeNumber(mobile);
-    console.warn(number)
+    // console.warn(number)
 }
   const handleLogin=()=>{
     navigation.navigate('VerifyOtp',{mobileNumber:number});
-    console.warn(number)
+    // console.warn(number)
   }
 
   
@@ -38,10 +41,7 @@ const Login = ({navigation}:LoginScreenProps) => {
     
     <View  className='flex-1 items-center justify-between pb-28'>
       <StatusBar  backgroundColor="#dadada" barStyle='light-content'/>    
-    <View className='w-full flex flex-row px-5 py-5 justify-between items-center'>
-    <Text className="inline-block rounded-full text-white bg-purple-500 px-2 py-1 text-xs font-bold font-['Montserrat-Regular']">Logo</Text>
-    <Text className="inline-block rounded-full text-black border px-5 py-1.5 text-md items-center justify-center  font-['Montserrat-Bold']">Help?</Text>
-    </View>
+      <HeaderBar name={''} logo={true} help={true} search={false}/>
     <View className='w-full flex justify-around items-center '>
       <Text className="text-2xl font-['Montserrat-Bold'] text-center">Grow Your Business With The Power of AI</Text>
       <LottieView  style={{

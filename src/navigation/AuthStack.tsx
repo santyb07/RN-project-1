@@ -4,57 +4,37 @@ import { Stack } from './appNavigation'
 import Login from '../screens/Login'
 import VerifyOtp from '../screens/VerifyOtp'
 import OnboardingScreen from '../screens/OnboardingScreen'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import SplashScreen from 'react-native-splash-screen';
-
+import { getItem, removeItem, setItem } from '../utils/asyncStorage'
 
 const AuthStack = () => {
     const [isFirstLaunch,setIsFirstLaunch] = useState<boolean | null>(null);
-    let routeName;
-
-    const checkLaunched= async()=>{
-        await AsyncStorage.getItem('alreadyLaunched').then((value)=>{
+    
+    useEffect(()=>{
+        const checkLaunched= async()=>{
+            let value =await getItem('alreadyLaunched');
             if(value==null){
-                // AsyncStorage.setItem('alreadyLaunched','true');
+                // setItem('alreadyLaunched','true');
                 setIsFirstLaunch(true);
-                SplashScreen.hide();
-
+                SplashScreen.hide();  
             }else{
                 setIsFirstLaunch(false);
                 SplashScreen.hide();
-
             }
-        })
-    }
-
-    useEffect(()=>{
-        // AsyncStorage.getItem('alreadyLaunched').then((value)=>{
-        //     if(value==null){
-        //         // AsyncStorage.setItem('alreadyLaunched','true');
-        //         setIsFirstLaunch(true);
-        //     }else{
-        //         setIsFirstLaunch(false);
-        //     }
-        // })
-        checkLaunched()
-        // SplashScreen.hide();
-
-
-        return()=> {
-             AsyncStorage.removeItem('alreadyLaunched')
-             setIsFirstLaunch(null);
         }
+        checkLaunched()
+        // return()=> {
+        //     removeItem('alreadyLaunched');
+        //      setIsFirstLaunch(null);
+        // }
     },[])
-    console.warn(isFirstLaunch);
+    // console.warn(isFirstLaunch);
+
+
 
     if(isFirstLaunch==null){
         return null;
     }
-    // else if(isFirstLaunch==true){
-    //     routeName= 'Onboarding';
-    // }else{
-    //     routeName= 'Login';
-    // }
   return (
     
     <Stack.Navigator {...{initialRouteName:isFirstLaunch? 'Onboarding':'Login'}} screenOptions={{ contentStyle: {backgroundColor: 'white'} }}>

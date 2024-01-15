@@ -9,6 +9,7 @@ import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome"
+import { colors } from '../utils/constants';
 
 const {width, height} = Dimensions.get('window');
 interface OnboardingScreenProps{
@@ -17,15 +18,14 @@ interface OnboardingScreenProps{
 const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
     // const navigation = useNavigation();
 
+
     const handleDone=()=>{
         navigation.replace("Login");
-        AsyncStorage.setItem('alreadyLaunched','true');
     }
     const Next=({...props}:DoneButtonProps)=>{
         return(
         
          <TouchableOpacity className='mx-10' {...props}>
-         {/* style={{marginHorizontal:30,width:'70%',alignItems:'flex-end',justifyContent:'center'}}  */}
           <View style={styles.btnView}>
              <FontAwesomeIcon name="arrow-circle-right" color={"#ffffff"} size={60} />
          </View>
@@ -35,7 +35,6 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
     const Done=({...props}:DoneButtonProps)=>{
         return(
             <TouchableOpacity className='mx-10'
-            // style={{marginHorizontal:30,width:'70%',alignItems:'flex-end',justifyContent:'center'}}
             {...props}>
              <View style={styles.btnView}>
                 <FontAwesomeIcon name="check-circle" color={"#ffffff"} size={60} />
@@ -52,22 +51,18 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
             <Text style={{fontSize:16,color:'white'}}>Skip</Text>
         </TouchableOpacity>
     );
-    // const Dots = ({selected}:DotProps) => {
-    //     let backgroundColor;
-    
-    //     backgroundColor = selected ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.3)';
-    
-    //     return (
-    //         <View 
-    //             style={{
-    //                 width:6,
-    //                 height: 6,
-    //                 marginHorizontal: 3,
-    //                 backgroundColor,
-    //             }}
-    //         />
-    //     );
-    // }
+    const Dots = ({selected}:DotProps) => {
+        return (
+            <View 
+            className={`
+            ${selected ?
+            'border px-3 py-1 mx-3 border-transparent rounded-md transition-all ease-in duration-700 opacity-100 bg-white':
+            'border px-1 py-1 mx-3 border-transparent rounded-md bg-gray-700'
+            }
+            `}
+            />
+        );
+    }
     
   return (
     //   <View style={styles.container}>
@@ -83,12 +78,12 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
         NextButtonComponent={Next}
         // SkipButtonComponent={Skip}
         DoneButtonComponent={Done}
-        // DotComponent={Dots}
+        DotComponent={Dots}
         containerStyles={{paddingHorizontal:30,paddingBottom:80,backgroundColor:'#4287f5'}}
         titleStyles={styles.title}
         subTitleStyles={styles.subTitle}
         pages={[{
-            backgroundColor:'#4287f5',
+            backgroundColor:`${colors.ActiveColor}`,
             image:(
              <LottieView  style={styles.lottie} source={require('../assets/animations/digital-marketing-4.json')} autoPlay loop/>
             ),
@@ -97,7 +92,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
             subtitle:'Elevate your brand with our digital expertise.'
         },
         {
-            backgroundColor:'#4287f5',
+            backgroundColor:`${colors.ActiveColor}`,
             image:(
                     <LottieView  style={styles.lottie} source={require('../assets/animations/digital-marketing-2.json')} autoPlay loop/>
                 ),
@@ -105,7 +100,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
             subtitle:'Explore powerful strategies tailored for your business success.'
         },
         {
-            backgroundColor:'#4287f5',
+            backgroundColor:`${colors.ActiveColor}`,
             image:(
                     <LottieView style={styles.lottie} source={require('../assets/animations/digital-marketing-3.json')} autoPlay loop/>
             ),
@@ -113,13 +108,6 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
             subtitle:'Dive into the world of effective digital marketing. Your journey begins now.'
         }]}
         />
-              {/* <LottieView
-        style={{flex: 1}}
-        source={require('../assets/animations/digital-marketing-3.json')}
-        autoPlay
-        loop
-        resizeMode="cover"
-      /> */}
     
     </View>
   )
