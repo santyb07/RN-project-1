@@ -67,7 +67,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
   return (
     //   <View style={styles.container}>
         <View className="flex-1">
-        <StatusBar backgroundColor="#4473c2" barStyle='light-content'/>
+        <StatusBar backgroundColor={colors.ActiveColor} barStyle='light-content'/>
         <Onboarding
         onDone={handleDone}
         // onSkip={handleDone}
@@ -79,7 +79,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
         // SkipButtonComponent={Skip}
         DoneButtonComponent={Done}
         DotComponent={Dots}
-        containerStyles={{paddingHorizontal:30,paddingBottom:80,backgroundColor:'#4287f5'}}
+        containerStyles={{paddingHorizontal:30,paddingBottom:80,backgroundColor:`${colors.ActiveColor}`}}
         titleStyles={styles.title}
         subTitleStyles={styles.subTitle}
         pages={[{
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent:"center",
         alignItems:'flex-end',
-        backgroundColor: '#4287f5',
+        backgroundColor: '#F39424',
         // backgroundColor:'#ffffff',
         // opacity:0.7,
         borderRadius: 50,

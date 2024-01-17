@@ -43,7 +43,7 @@ const HomeScreen= (props:HomeScreenProps)  => {
       <View className='justify-around px-4 mt-2 bg-white items-start pt-3'>
         <ThemeHeading heading={'Integrations'}/>
         <View className=' flex-row items-center justify-between w-full'>
-          <TouchableOpacity className='w-full bg-blue-600 flex-row justify-center items-center py-3 rounded-xl'>
+          <TouchableOpacity className='w-full bg-blue-500 flex-row justify-center items-center py-3 rounded-xl'>
           <Text className=" text-white mr-3"> 
           <FontAwesomeIcons name={'facebook-square'} color={'white'} size={20} />
           </Text>
@@ -56,9 +56,10 @@ const HomeScreen= (props:HomeScreenProps)  => {
         </View>
           </TouchableOpacity>
       </View>
-      <View className='justify-around px-4 mt-2 bg-white items-start pt-3'>
+      <View className='justify-around px-4 mt-2 bg-white items-start py-3'>
         <ThemeHeading heading={'Past Ads'}/>
-        <View className='w-full flex items-center justify-center"'>
+        <View className='w-full flex-1 items-center justify-center'>
+          <AdCard/>
           <AdCard/>
         </View>         
       </View>

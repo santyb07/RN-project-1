@@ -142,7 +142,7 @@ const AppStack = () => {
     
 
     backBehavior='initialRoute'
-    initialRouteName='Grow'
+    initialRouteName='Home'
     >
         <Tab.Screen 
         name="Home" 

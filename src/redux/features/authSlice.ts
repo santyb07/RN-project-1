@@ -19,11 +19,11 @@ export const authSlice = createSlice({
     loginUser:(state,actions)=>{
         state.userLoggedIn = true;
         state.mobileNumber = actions.payload;
-        console.warn('user loggedin');
+        // console.warn('user loggedin');
     },
     logoutUser:(state)=>{
         state.userLoggedIn = false;
-        console.warn('user loggedin');
+        // console.warn('user loggedin');
     },
   },
   extraReducers:builder=>{
