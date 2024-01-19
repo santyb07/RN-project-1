@@ -15,7 +15,7 @@ const AllLeads = () => {
       <View className='flex-row justify-start px-3 py-3'>
       {
         clipData.map((val,key)=>(
-          <Clip name={val}/>
+          <Clip name={val} key={key}/>
           ))
         }
       </View>

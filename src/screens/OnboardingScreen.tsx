@@ -1,13 +1,9 @@
 import React,{FC} from 'react'
 import { View,Text, StyleSheet, Dimensions, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/appNavigation';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { setItem } from '../utils/asyncStorage';
 import Onboarding, { DoneButtonProps, NextButtonProps, SkipButtonProps, DotProps } from 'react-native-onboarding-swiper'; 
 import LottieView from 'lottie-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import LinearGradient from 'react-native-linear-gradient';
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome"
 import { colors } from '../utils/constants';
 
@@ -88,7 +84,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
              <LottieView  style={styles.lottie} source={require('../assets/animations/digital-marketing-4.json')} autoPlay loop/>
             ),
             // title:<Text style={styles.title}>Welcome to ABC Agency</Text>,
-            title:'Welcome to ABC Agency',
+            title:'Welcome to WebGraphAgency',
             subtitle:'Elevate your brand with our digital expertise.'
         },
         {

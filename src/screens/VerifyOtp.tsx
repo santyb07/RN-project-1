@@ -41,18 +41,18 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
   let isDisableVerify= f1!=='' && f2!=='' && f3!=='' && f4!=='' && f5!=='' && f6!==''? false:true;
 
   const  handleVerify=()=>{
-    if(cnt===0){
-      showMessage({
-        message: "Incorrect OTP",
-        // description: "This is our second message",
-        type: "danger",
-        titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
-        // backgroundColor:"#000000"
-      });
-      setCnt(1)
-    }else{
+    // if(cnt===0){
+    //   showMessage({
+    //     message: "Incorrect OTP",
+    //     // description: "This is our second message",
+    //     type: "danger",
+    //     titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
+    //     // backgroundColor:"#000000"
+    //   });
+    //   setCnt(1)
+    // }else{
       dispatch(loginUser(mobileNumber))
-    }
+    // }
    
   }
 
