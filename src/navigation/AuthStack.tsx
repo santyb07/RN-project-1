@@ -37,7 +37,13 @@ const AuthStack = () => {
     }
   return (
     
-    <Stack.Navigator {...{initialRouteName:isFirstLaunch? 'Onboarding':'Login'}} screenOptions={{ contentStyle: {backgroundColor: 'white'} }}>
+    <Stack.Navigator {...{initialRouteName:isFirstLaunch? 'Onboarding':'Login'}} 
+    screenOptions={{ 
+        contentStyle: {backgroundColor: 'white'},
+        animationTypeForReplace:"pop",
+        animation:"slide_from_right",
+     }}
+    >
     <Stack.Screen name="Onboarding" options={{headerShown:false}} component={OnboardingScreen}/>
     <Stack.Screen name="Login" options={{headerShown:false}} component={Login}/>
     <Stack.Screen name="VerifyOtp" options={{headerShown:false}} component={VerifyOtp}/>

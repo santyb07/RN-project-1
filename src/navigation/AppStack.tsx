@@ -1,17 +1,19 @@
 import React from 'react'
 import { Stack } from './appNavigation'
 import HomeScreen from '../screens/HomeScreen'
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {BottomTabBar, BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FeatherIcons from "react-native-vector-icons/Feather"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import FontAwesomeIcons from "react-native-vector-icons/FontAwesome6"
 
-import { Animated, Easing, Platform } from 'react-native';
+import {Easing, Platform } from 'react-native';
 import { colors } from '../utils/constants';
 import Templates from '../screens/Templates';
 import AdsPackage from '../screens/AdsPackage';
 import AllLeads from '../screens/AllLeads';
 import BusinessDetails from '../screens/BusinessDetails';
+import Animated, { FadeInUp, FadeOutDown }from 'react-native-reanimated';
+
 
 export type BottomTabParamList ={
  Home: undefined,
@@ -20,56 +22,56 @@ export type BottomTabParamList ={
  Leads: undefined,
  Business:undefined
 }
-interface TransitionParams {
-  transition?: string;
-}
-interface SceneProps {
-  layout: { initWidth: number; initHeight: number };
-  position: Animated.Value;
-  scene: { index: number; route: { params?: TransitionParams } };
-  index:any;
-  width:any;
-}
-type ScreenInterpolatorFunction = (sceneProps: SceneProps) => object;
+// interface TransitionParams {
+//   transition?: string;
+// }
+// interface SceneProps {
+//   layout: { initWidth: number; initHeight: number };
+//   position: Animated.Value;
+//   scene: { index: number; route: { params?: TransitionParams } };
+//   index:any;
+//   width:any;
+// }
+// type ScreenInterpolatorFunction = (sceneProps: SceneProps) => object;
 
 
-let SlideFromRight: ScreenInterpolatorFunction = ({index, position, width}) => {
-  const translateX = position.interpolate({
-    inputRange: [index - 1, index],
-    outputRange: [width, 0],
-  });
+// let SlideFromRight: ScreenInterpolatorFunction = ({index, position, width}) => {
+//   const translateX = position.interpolate({
+//     inputRange: [index - 1, index],
+//     outputRange: [width, 0],
+//   });
 
-  return { transform: [{ translateX }] };
-};
+//   return { transform: [{ translateX }] };
+// };
 
-export type BottomTabAnimation={
-  initialRouteName:string,
-  transitionConfig:()=>void;
-};
+// export type BottomTabAnimation={
+//   initialRouteName:string,
+//   transitionConfig:()=>void;
+// };
 
-const TransitionConfiguration = () => {
-  return {
-    gestureEnabled: true,
-    cardOverlayEnabled: true,
-    cardStyleInterpolator: ({ current, next, layouts }: any) => {
-      const progress = Animated.add(
-        current.progress.interpolate({ inputRange: [0, 1], outputRange: [0, 1], extrapolate: 'clamp' }),
-        next
-          ? next.progress.interpolate({ inputRange: [0, 1], outputRange: [0, 1], extrapolate: 'clamp' })
-          : 0
-      );
+// const TransitionConfiguration = () => {
+//   return {
+//     gestureEnabled: true,
+//     cardOverlayEnabled: true,
+//     cardStyleInterpolator: ({ current, next, layouts }: any) => {
+//       const progress = Animated.add(
+//         current.progress.interpolate({ inputRange: [0, 1], outputRange: [0, 1], extrapolate: 'clamp' }),
+//         next
+//           ? next.progress.interpolate({ inputRange: [0, 1], outputRange: [0, 1], extrapolate: 'clamp' })
+//           : 0
+//       );
 
-      const width = layouts.screen.width;
+//       const width = layouts.screen.width;
 
-      const translateX = progress.interpolate({
-        inputRange: [0, 1, 2],
-        outputRange: [width, 0, -width],
-      });
+//       const translateX = progress.interpolate({
+//         inputRange: [0, 1, 2],
+//         outputRange: [width, 0, -width],
+//       });
 
-      return { cardStyle: { transform: [{ translateX }] } };
-    },
-  };
-};
+//       return { cardStyle: { transform: [{ translateX }] } };
+//     },
+//   };
+// };
 
 // const Tab = createBottomTabNavigator();
 
@@ -124,8 +126,31 @@ const BusinessStack = () => (
 )
 
 const AppStack = () => {
+
+
+  const tabBarVisibilityAnimationConfig = {
+    show: {
+      animation: 'slide_in_from_right',
+      slideFrom: 'right',
+    },
+    hide: {
+      animation: 'slide_out_to_right',
+      slideFrom: 'left',
+    },
+  };
+
   return (
     <Tab.Navigator
+    tabBar={(props:BottomTabBarProps)=>{
+      return <Animated.View
+      entering={FadeInUp}
+      exiting={FadeOutDown}
+      // layout={Layout.duration(100)}
+      
+      >
+        <BottomTabBar {...props}/>
+      </Animated.View>
+    }}
     screenOptions={{
       tabBarActiveTintColor: colors.ActiveColor,
       tabBarInactiveTintColor: colors.InactiveColor,

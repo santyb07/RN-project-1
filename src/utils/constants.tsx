@@ -6,5 +6,6 @@ export const colors={
     StatusBarLightGray:"#dadada",
     ActiveColor:'#F39424',
     ActiveColor2:'#4287f5',
+    ActiveColor2Light:'#ffb262',
     StatusBarLightOrange:'',
 }

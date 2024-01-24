@@ -23,7 +23,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
         
          <TouchableOpacity className='mx-10' {...props}>
           <View style={styles.btnView}>
-             <FontAwesomeIcon name="arrow-circle-right" color={"#ffffff"} size={60} />
+             <FontAwesomeIcon name="arrow-circle-right" color={"#F39424"} size={60} />
          </View>
      </TouchableOpacity>
         )
@@ -33,7 +33,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
             <TouchableOpacity className='mx-10'
             {...props}>
              <View style={styles.btnView}>
-                <FontAwesomeIcon name="check-circle" color={"#ffffff"} size={60} />
+                <FontAwesomeIcon name="check-circle" color={"#F39424"} size={60} />
             </View>
         </TouchableOpacity>
         )
@@ -52,8 +52,8 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
             <View 
             className={`
             ${selected ?
-            'border px-3 py-1 mx-3 border-transparent rounded-md transition-all ease-in duration-700 opacity-100 bg-white':
-            'border px-1 py-1 mx-3 border-transparent rounded-md bg-gray-700'
+            `border px-3 py-1 mx-3 border-transparent rounded-md transition-all ease-in duration-700 opacity-100 bg-[#F39424]`:
+            'border px-1 py-1 mx-3 border-transparent rounded-md bg-gray-400'
             }
             `}
             />
@@ -63,7 +63,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
   return (
     //   <View style={styles.container}>
         <View className="flex-1">
-        <StatusBar backgroundColor={colors.ActiveColor} barStyle='light-content'/>
+        <StatusBar backgroundColor={colors.ActiveColor2Light} barStyle='light-content'/>
         <Onboarding
         onDone={handleDone}
         // onSkip={handleDone}
@@ -75,20 +75,21 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
         // SkipButtonComponent={Skip}
         DoneButtonComponent={Done}
         DotComponent={Dots}
-        containerStyles={{paddingHorizontal:30,paddingBottom:80,backgroundColor:`${colors.ActiveColor}`}}
+        containerStyles={{paddingHorizontal:30,paddingBottom:80,backgroundColor:`#ffffff`}}
         titleStyles={styles.title}
         subTitleStyles={styles.subTitle}
         pages={[{
-            backgroundColor:`${colors.ActiveColor}`,
+            // backgroundColor:`${colors.ActiveColor}`,
+            backgroundColor:'#ffffff',
             image:(
              <LottieView  style={styles.lottie} source={require('../assets/animations/digital-marketing-4.json')} autoPlay loop/>
             ),
             // title:<Text style={styles.title}>Welcome to ABC Agency</Text>,
-            title:'Welcome to WebGraphAgency',
+            title:"Welcome to WebGraphAgency.",
             subtitle:'Elevate your brand with our digital expertise.'
         },
         {
-            backgroundColor:`${colors.ActiveColor}`,
+            backgroundColor:`#ffffff`,
             image:(
                     <LottieView  style={styles.lottie} source={require('../assets/animations/digital-marketing-2.json')} autoPlay loop/>
                 ),
@@ -96,7 +97,7 @@ const OnboardingScreen= ({navigation}:OnboardingScreenProps) => {
             subtitle:'Explore powerful strategies tailored for your business success.'
         },
         {
-            backgroundColor:`${colors.ActiveColor}`,
+            backgroundColor:`#ffffff`,
             image:(
                     <LottieView style={styles.lottie} source={require('../assets/animations/digital-marketing-3.json')} autoPlay loop/>
             ),
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize:28,
-        color:'#FFFFFF',
+        color:'#F39424',
         // color:'black',
         // backgroundColor:'#ffffff',
         // fontWeight:'700',
@@ -136,17 +137,18 @@ const styles = StyleSheet.create({
     },
     subTitle:{
         fontSize:17,
-        color:'#FFFFFF',
-        // color:'#000000',
+        // color:'#FFFFFF',
+        color:'#606683',
         // backgroundColor:'#ffffff',
-        fontFamily:'Montserrat-Regular'
+        // fontWeight:"00",
+        fontFamily:'Montserrat-SemiBold'
     },
     btnView:{
         width: '100%',
         height: '100%',
         justifyContent:"center",
         alignItems:'flex-end',
-        backgroundColor: '#F39424',
+        backgroundColor: '#ffffff',
         // backgroundColor:'#ffffff',
         // opacity:0.7,
         borderRadius: 50,

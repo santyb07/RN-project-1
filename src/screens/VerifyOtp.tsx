@@ -100,7 +100,7 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
             Enter OTP
         </Text>
         <View className='flex justify-center items-center flex-row gap-5'>
-          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-10 rounded-md ${f1.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
+          <TextInput keyboardType='number-pad' maxLength={1} className={`w-11 h-11 rounded-md ${f1.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
           ref={et1}
           value={f1}
           onChangeText={txt =>{
@@ -112,7 +112,7 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
             }
           }}
           />
-          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-10 rounded-md ${f2.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
+          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-11 rounded-md ${f2.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
           ref={et2}
           value={f2}
           onChangeText={txt =>{
@@ -124,7 +124,7 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
             }
           }}
           />
-          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-10 rounded-md ${f3.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
+          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-11 rounded-md ${f3.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
            ref={et3}
            value={f3}
            onChangeText={txt =>{
@@ -136,7 +136,7 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
             }
            }}
           />
-          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-10 rounded-md ${f4.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
+          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-11 rounded-md ${f4.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
           ref={et4}
           value={f4}
           onChangeText={txt =>{
@@ -148,7 +148,7 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
             }
           }}
           />
-          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-10 rounded-md ${f5.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
+          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-11 rounded-md ${f5.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
           ref={et5}
           value={f5}
           onChangeText={txt =>{
@@ -160,7 +160,7 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
             }
           }}
           />
-          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-10 rounded-md ${f6.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
+          <TextInput keyboardType='number-pad' maxLength={1} className={`w-10 h-11 rounded-md ${f6.length>=1? 'border-blue-400':'border-gray-400' }  border-2 text-center focus:border-blue-400 text-black text-xl`}
           ref={et6}
           value={f6}
           onChangeText={txt =>{
