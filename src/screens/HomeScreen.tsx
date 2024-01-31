@@ -12,6 +12,7 @@ import AccountOverview from './components/AccountOverview';
 import LeadsSummary from './components/LeadsSummary';
 import FontAwesomeIcons from "react-native-vector-icons/FontAwesome"
 import AdCard from './components/AdCard';
+import Animated, { FadeInLeft, FadeInRight, FadeInUp, FadeOutDown, FadeOutLeft } from 'react-native-reanimated';
 
 
 interface HomeScreenProps{
@@ -22,15 +23,21 @@ const HomeScreen= (props:HomeScreenProps)  => {
 
   return (
     <View className='flex-1 mb-16'>
-      <StatusBar backgroundColor={colors.StatusBarLightGray} barStyle='light-content'/>
+      <Animated.View
+    entering={FadeInRight}
+    exiting={FadeOutLeft}
+    >
+      {/* <StatusBar backgroundColor={colors.StatusBarLightGray} barStyle='light-content'/> */}
     <HeaderBar name={'Facebook Test'} logo={true} help={true} search={false}/>
     <ScrollView>
     <View className='justify-around px-4 items-start bg-white pb-5'>
         <ThemeHeading heading={'Account Overview'}/>
+      
         <View className=' flex-row items-center justify-between w-full '>
           <AccountOverview name={"Campaigns"} logo={'bullhorn'} count={`${2}`}/>
           <AccountOverview name={"Ad Views"} logo={'eye'} count={`20,000`}/>
         </View>
+      
       </View>
       <View className='justify-around px-4 mt-2 bg-white items-start pt-3 pb-5'>
         <ThemeHeading heading={'Leads Summary'}/>
@@ -64,6 +71,7 @@ const HomeScreen= (props:HomeScreenProps)  => {
         </View>         
       </View>
       </ScrollView>
+      </Animated.View>
     </View>
   )
 }

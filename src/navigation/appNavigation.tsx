@@ -12,17 +12,22 @@ import SplashScreen from 'react-native-splash-screen';
 // export type StackNavigation = NavigationProp<RootStackParamList>;
 
 export type RootStackParamList={
+  Home:undefined,
   Onboarding:undefined,
   Login:undefined,
   VerifyOtp:{
     mobileNumber:string
   },
-  AccountOverview:undefined,
-  Templates:undefined,
-  AdsPackage:undefined,
-  AllLeads:undefined,
-  BusinessDetails: undefined
-  
+  // AccountOverview:undefined,
+  // Templates:undefined,
+  // AdsPackage:undefined,
+  // AllLeads:undefined,
+  // BusinessDetails: undefined,
+  //New Navigation
+  TemplateEditor:{
+    templateImg:string,
+    promotion:boolean,
+  } | undefined,  
 }
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
 import HeaderBar from './components/HeaderBar'
 import LottieView from 'lottie-react-native'
+import PhoneSignIn from '../utils/firebase/PhoneSignIn';
 
 //Grow Component
 const {width, height} = Dimensions.get('window');
@@ -15,7 +16,7 @@ const AdsPackage = () => {
     <LottieView  style={styles.lottie} source={require('../assets/animations/coming-soon.json')} autoPlay loop/>
     </View>
         <View>
-     
+        {/* <PhoneSignIn/> */}
       
      
       

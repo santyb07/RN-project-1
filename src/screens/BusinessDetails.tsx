@@ -73,7 +73,6 @@ const BusinessDetails = () => {
   }
   return (
     <View className='flex-1 bg-white'>
-    <StatusBar backgroundColor={colors.ActiveColor} barStyle='light-content'/>
     <View className='bg-[#F39424] rounded-b-xl'>
 
     <View className='bg-[#F39424] flex-row justify-between items-center' >

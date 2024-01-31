@@ -7,15 +7,22 @@ import { showMessage } from 'react-native-flash-message'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../redux/features/authSlice'
 import HeaderBar from './components/HeaderBar'
+import { useRoute } from '@react-navigation/native'
+
 
 
 
 interface VerifyOtpProps{
   navigation: StackNavigationProp<RootStackParamList,'VerifyOtp'>,
 }
+interface VerifyOtp {
+  mobileNumber: string;
+}
 
 const VerifyOtp = ({navigation}:VerifyOtpProps) => {
-  const mobileNumber=navigation.getState().routes[1].params?.mobileNumber;
+  const route= useRoute();
+  const { mobileNumber } = route.params as VerifyOtp;
+  // const mobileNumber=navigation.getState().routes[1].params?.mobileNumber;
   const dispatch = useDispatch();
   const [cnt,setCnt] = useState(0);
   const [seconds,setSeconds] = useState(30);
