@@ -27,7 +27,10 @@ export type RootStackParamList={
   TemplateEditor:{
     templateImg:string,
     promotion:boolean,
-  } | undefined,  
+  } | undefined,
+  DownloadShareTemplate:{
+    templateLocation:string,
+  }  
 }
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();

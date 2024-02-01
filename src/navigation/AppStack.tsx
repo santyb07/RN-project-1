@@ -7,17 +7,18 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import FontAwesomeIcons from "react-native-vector-icons/FontAwesome6"
 
 import { colors } from '../utils/constants';
-import Templates from '../screens/Templates';
+import Templates from '../screens/Template/Templates';
 import AdsPackage from '../screens/AdsPackage';
 import AllLeads from '../screens/AllLeads';
 import BusinessDetails from '../screens/BusinessDetails';
 import MainScreen from '../screens/MainScreen';
-import TemplateEditor from '../screens/components/TemplateEditor';
+import TemplateEditor from '../screens/Template/TemplateEditor';
 import { NavigationContainer } from '@react-navigation/native';
 import AccountOverview from '../screens/components/AccountOverview';
+import DownloadShareTemplate from '../screens/Template/components/DownloadShareTemplate';
 
 export type BottomTabParamList ={
- Home: undefined,
+ Main: undefined,
  Design: undefined,
  Grow: undefined,
  Leads: undefined,
@@ -25,149 +26,6 @@ export type BottomTabParamList ={
 }
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
-
-
-// const HomeStack=()=>(
-//   <Stack.Navigator 
-//   screenOptions={{ 
-//         contentStyle: {backgroundColor: 'white'},
-//         animationTypeForReplace:"pop",
-//         animation:"slide_from_right",
-//      }}
-//     >
-//     <Stack.Screen name="AccountOverview" options={{headerShown:false}} component={HomeScreen}/>
-//     {/* <Stack.Screen name="Templates" options={{headerShown:true}} component={}/> */}
-//     </Stack.Navigator>
-// )
-// const TemplateStack=()=>(
-//   <Stack.Navigator 
-//   screenOptions={{ 
-//         contentStyle: {backgroundColor: 'white'},
-//         animationTypeForReplace:"pop",
-//         animation:"slide_from_right",
-//      }}
-//     >
-//     <Stack.Screen name="Templates" options={{headerShown:false}} component={Templates}/>
-//     <Stack.Screen name="EditTemplates" options={{headerShown:true,title:'Edit Template'}} component={TemplateEditor}/>
-//     </Stack.Navigator>
-// )
-// const AdsPackageStack=()=>(
-//   <Stack.Navigator 
-//   screenOptions={{ 
-//         contentStyle: {backgroundColor: 'white'},
-//         animationTypeForReplace:"pop",
-//         animation:"slide_from_right",
-//      }}
-//     >
-//     <Stack.Screen name="AdsPackage" options={{headerShown:false}} component={AdsPackage}/>
-//     {/* <Stack.Screen name="Templates" options={{headerShown:true}} component={}/> */}
-//     </Stack.Navigator>
-// )
-// const LeadsStack=()=>(
-//   <Stack.Navigator 
-//   screenOptions={{ 
-//         contentStyle: {backgroundColor: 'white'},
-//         animationTypeForReplace:"pop",
-//         animation:"slide_from_right",
-//      }}
-//     >
-//     <Stack.Screen name="AdsPackage" options={{headerShown:false}} component={AllLeads}/>
-//     {/* <Stack.Screen name="Templates" options={{headerShown:true}} component={}/> */}
-//     </Stack.Navigator>
-// )
-// const BusinessProfileStack=()=>(
-//   <Stack.Navigator 
-//   screenOptions={{ 
-//         contentStyle: {backgroundColor: 'white'},
-//         animationTypeForReplace:"pop",
-//         animation:"slide_from_right",
-//      }}
-//     >
-//     <Stack.Screen name="BusinessDetails" options={{headerShown:false}} component={BusinessDetails}/>
-//     {/* <Stack.Screen name="Templates" options={{headerShown:true}} component={}/> */}
-//     </Stack.Navigator>
-// )
-
-// const AppStack = () => {
-
-//    return (
-//     <Tab.Navigator
-//     screenOptions={{
-//       tabBarActiveTintColor: colors.ActiveColor,
-//       tabBarInactiveTintColor: colors.InactiveColor,
-//       tabBarStyle: {
-//         position: 'absolute',
-//         borderTopColor: 'rgba(0, 0, 0, .2)',
-//         paddingBottom:10,
-//         paddingTop:3,
-//         height:60
-//       },
-//       headerShown:false,
-//       tabBarLabelStyle:{fontFamily:'Montserrat-Medium',fontSize:12},
-//     }}
-//     backBehavior='initialRoute'
-//     initialRouteName='Home'
-//     >  
-//          <Tab.Screen 
-//          name="Home" 
-//          component={HomeStack}
-//          options={{
-//            tabBarLabel: 'Home',
-//            tabBarIcon: ({focused ,color, size}) => (
-//              <FeatherIcons name="home" color={color} size={24} />
-//          ),
-    
-//        }
-//        } 
-//          />
-//          <Tab.Screen 
-//          name="Design" 
-//          component={TemplateStack}
-//          options={()=>({
-//            tabBarLabel: 'Design',
-//           //  tabBarVisible: false,
-//            tabBarIcon: ({color, size}) => (
-//              <FeatherIcons name="layout" color={color} size={24} />
-//          ),
-//         })} 
-//          />
-//          <Tab.Screen 
-//          name="Grow" 
-//          component={AdsPackageStack}
-//          options={()=>({
-//            tabBarLabel: 'Grow',
-//            tabBarIcon: ({color, size}) => (
-//              <MaterialCommunityIcons name="rocket-launch" color={color} size={24} />
-//              ),        
-//             })} 
-//             />
-//          <Tab.Screen 
-//          name="Leads" 
-//          component={LeadsStack}
-//          options={()=>({
-//            tabBarLabel: 'Leads',
-//            tabBarIcon: ({color, size}) => (
-//              <MaterialCommunityIcons name="account-group-outline" color={color} size={24} />
-//              ),
-//             })}
-//          />
-//           <Tab.Screen 
-//          name="Business" 
-//          component={BusinessProfileStack}
-//          options={()=>({
-//            tabBarLabel: 'Business',
-//            tabBarIcon: ({color, size}) => (
-//              <FontAwesomeIcons name="building" color={color} size={24} />
-//              ),
-//        })}
-//          /> 
-//      </Tab.Navigator>
-//    )
-//  }
-
-
-// export default AppStack;
-
 
 const HomeTabs=()=>(
   <Tab.Navigator
@@ -185,10 +43,10 @@ const HomeTabs=()=>(
       tabBarLabelStyle:{fontFamily:'Montserrat-Medium',fontSize:12},
     }}
     backBehavior='initialRoute'
-    initialRouteName='Home'
+    initialRouteName='Main'
     >  
          <Tab.Screen 
-         name="Home" 
+         name="Main" 
          component={HomeScreen}
          options={{
            tabBarLabel: 'Home',
@@ -255,6 +113,7 @@ function AppStack() {
     >
       <Stack.Screen name="Home" component={HomeTabs} options={{headerShown:false}} />
       <Stack.Screen name="TemplateEditor" component={TemplateEditor} options={{headerShown:true,title:'Edit Template'}}/>
+      <Stack.Screen name="DownloadShareTemplate" component={DownloadShareTemplate} options={{headerShown:true,title:'Share & Post'}}/>
   </Stack.Navigator>
   );
 }
