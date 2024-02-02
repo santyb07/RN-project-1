@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native'
 
 import {RootStackParamList } from '../navigation/appNavigation';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -22,7 +22,8 @@ interface HomeScreenProps{
 const HomeScreen= (props:HomeScreenProps)  => {
 
   return (
-    <View className='flex-1 mb-16'>
+    <SafeAreaView className='flex-1'>
+    <View className='flex-1 mb-28'>
       <Animated.View
     entering={FadeInRight}
     exiting={FadeOutLeft}
@@ -73,6 +74,7 @@ const HomeScreen= (props:HomeScreenProps)  => {
       </ScrollView>
       </Animated.View>
     </View>
+    </SafeAreaView>
   )
 }
 

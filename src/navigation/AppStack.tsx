@@ -10,12 +10,13 @@ import { colors } from '../utils/constants';
 import Templates from '../screens/Template/Templates';
 import AdsPackage from '../screens/AdsPackage';
 import AllLeads from '../screens/AllLeads';
-import BusinessDetails from '../screens/BusinessDetails';
+import BusinessDetails from '../screens/business/BusinessDetails';
 import MainScreen from '../screens/MainScreen';
 import TemplateEditor from '../screens/Template/TemplateEditor';
 import { NavigationContainer } from '@react-navigation/native';
 import AccountOverview from '../screens/components/AccountOverview';
 import DownloadShareTemplate from '../screens/Template/components/DownloadShareTemplate';
+import EditBusinessDetails from '../screens/business/EditBusinessDetails';
 
 export type BottomTabParamList ={
  Main: undefined,
@@ -109,10 +110,12 @@ function AppStack() {
               contentStyle: {backgroundColor: 'white'},
               animationTypeForReplace:"pop",
               animation:"slide_from_right",
+              headerTitleStyle:{fontFamily:'Montserrat-Medium'}
            }}
     >
       <Stack.Screen name="Home" component={HomeTabs} options={{headerShown:false}} />
       <Stack.Screen name="TemplateEditor" component={TemplateEditor} options={{headerShown:true,title:'Edit Template'}}/>
+      <Stack.Screen name="EditBusinessDetails" component={EditBusinessDetails} options={{headerShown:true,title:'Edit Your Business'}}/>
       <Stack.Screen name="DownloadShareTemplate" component={DownloadShareTemplate} options={{headerShown:true,title:'Share & Post'}}/>
   </Stack.Navigator>
   );

@@ -28,6 +28,7 @@ export type RootStackParamList={
     templateImg:string,
     promotion:boolean,
   } | undefined,
+  EditBusinessDetails:undefined,
   DownloadShareTemplate:{
     templateLocation:string,
   }  
