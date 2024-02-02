@@ -1,19 +1,23 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import React,{ useEffect, useRef, useState} from 'react'
-import { Button, Dimensions, KeyboardAvoidingView, StatusBar, ViewStyle, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {Dimensions, KeyboardAvoidingView, StatusBar, ViewStyle, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { RootStackParamList } from '../navigation/appNavigation'
 import PhoneInput from 'react-native-phone-input'
 import LottieView from 'lottie-react-native'
 import CheckBox from '@react-native-community/checkbox';
-import { useAppDispatch, useAppSelector } from '../redux/hooks'
-import { removeLaunch } from '../redux/features/onboardSlice'
+import { LogBox } from 'react-native';
 import HeaderBar from './components/HeaderBar'
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { showMessage } from 'react-native-flash-message'
+import { Button } from '@rneui/themed'
 // import { AuthContext } from '../context/AuthContext'
 // import { styled } from 'nativewind'
 // import { SafeAreaView } from 'react-native-safe-area-context'
 // const {width, height} = Dimensions.get('window');
 
-
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 interface LoginScreenProps{
     navigation: StackNavigationProp<RootStackParamList,"Login">,
@@ -23,16 +27,35 @@ interface LoginScreenProps{
 const Login = ({navigation}:LoginScreenProps) => {
   const [number,setChangeNumber]= useState<string>("");
   const [toggleCheckBox, setToggleCheckBox] = useState<boolean>(true)
-
-  let disableLogin= (number.length>9 && toggleCheckBox==true) ? true:false;
+  const [confirmData,setConfirmData] = useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
+  const [loading,setLoading] = useState<boolean | null>(null);
+  let disableLogin= (number.length===10 && toggleCheckBox==true) ? true:false;
   // console.warn(disableLogin);
   const onChanged =(text:string)=>{
     let mobile= text.replace(/[^0-9]/g, '');
     setChangeNumber(mobile);
     // console.warn(number)
 }
-  const handleLogin=()=>{
-    navigation.navigate('VerifyOtp',{mobileNumber:number});
+  const handleLogin=async()=>{
+    try{
+      setLoading(true);
+      const mobileNumber= "+91" +number
+      const confirmation = await auth().signInWithPhoneNumber(mobileNumber)
+    console.log(confirmation)
+    setConfirmData(confirmation);
+       showMessage({
+        message: "OTP Sent Successfully",
+        // description: "This is our second message",
+        type: "success",
+        titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
+        // backgroundColor:"#000000"
+      });
+      navigation.navigate('VerifyOtp',{mobileNumber:number,confirmData:confirmData});
+      setLoading(false);
+    }catch(err){
+      setLoading(false)
+      console.warn('error in firebase auth',err);
+    }
     // console.warn(number)
   }
 
@@ -99,10 +122,53 @@ const Login = ({navigation}:LoginScreenProps) => {
          
         /> */}
         </View>
-
-      <TouchableOpacity className={`mt-5 py-2.5 rounded-md ${disableLogin? 'bg-blue-500':'bg-gray-300'}`}  onPress={handleLogin} disabled={!disableLogin}>
-        <Text className="text-white text-xl text-center font-['Montserrat-Bold']" >Login</Text>
-      </TouchableOpacity>
+        {
+          loading ? 
+          <View className='w-full justify-center items-center py-8'>
+          <Button
+          title="Login"
+          loading={true}
+          disabled={!disableLogin}
+          loadingProps={{
+            size: 'large',
+            color: 'rgb(255, 255, 255)',
+          }}
+          titleStyle={{ fontFamily:'Montserrat-SemiBold',fontSize:20 }}
+          buttonStyle={{
+            backgroundColor: 'rgb(59,130,246)',
+            width:'100%',
+            borderColor: 'transparent',
+            borderWidth: 0,
+            borderRadius: 5,
+            // paddingVertical: 10,
+          }}
+          containerStyle={{
+            width: '100%',
+          }}
+        />
+        </View>:
+         <View className='w-full justify-center items-center py-8'>
+         <Button
+         title="Login"
+        //  loading={true}
+         onPress={handleLogin}
+         disabled={!disableLogin}
+         titleStyle={{ fontFamily:'Montserrat-SemiBold',fontSize:20 }}
+         buttonStyle={{
+           backgroundColor: 'rgb(59,130,246)',
+           width:'100%',
+           borderColor: 'transparent',
+           borderWidth: 0,
+           borderRadius: 5,
+           paddingVertical: 14,
+         }}
+         containerStyle={{
+           width: '100%',
+         }}
+       />
+       </View>
+        }
+      
     </View>
 
   </View>
@@ -111,54 +177,5 @@ const Login = ({navigation}:LoginScreenProps) => {
 );
 };
 
-// const styles = StyleSheet.create({
-// container: {
-//   flex: 1,
-//   alignItems: 'center',
-//   justifyContent: 'center',
-//   backgroundColor:'#fff',
-// },
-// form: {
-//   width: '80%',
-// },
-// label: {
-//   marginTop: 20,
-//   marginBottom:5
-// },
-// input: {
-//   borderColor: '#ccc',
-//   borderWidth: 1,
-//   borderRadius: 5,
-//   padding: 10,
-//   fontSize: 18,
-// },
-// button: {
-//   marginTop: 20,
-//   backgroundColor: '#1E90FF',
-//   borderRadius: 5,
-//   paddingVertical: 10,
-//   paddingHorizontal: 20,
-// },
-// buttonText: {
-//   color: '#fff',
-//   fontSize: 18,
-//   textAlign:'center',
-// },
-// avatarContainer: {
-//   marginTop: 10,
-//   alignItems: 'center',
-
-//   shadowColor: '#000',
-//   shadowOffset: { width: 0, height: 2 },
-//   shadowOpacity: 0.8,
-//   shadowRadius: 2,
-//   elevation: 1,
-// },
-// avatar: {
-//   width: 100,
-//   height: 100,
-//   borderRadius: 50,
-// },
-// });
 export default Login
 

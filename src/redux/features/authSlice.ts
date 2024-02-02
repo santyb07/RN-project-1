@@ -5,24 +5,30 @@ import {PURGE} from "redux-persist"
 export interface OnboardState {
     userLoggedIn: boolean | null,
     mobileNumber: number | null,
+    userId:string | null,
 }
 
 const initialState: OnboardState = {
-    userLoggedIn: null,
+    userLoggedIn: false,
     mobileNumber: null,
+    userId: null,
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginUser:(state,actions)=>{
+    loginUser:(state,action)=>{
         state.userLoggedIn = true;
-        state.mobileNumber = actions.payload;
+        state.mobileNumber = action.payload.mobileNumber;
+        state.userId = action.payload.userId;
+        // console.warn(action.payload)
         // console.warn('user loggedin');
     },
     logoutUser:(state)=>{
         state.userLoggedIn = false;
+        state.mobileNumber =null;
+        state.userId = '';
         // console.warn('user loggedin');
     },
   },

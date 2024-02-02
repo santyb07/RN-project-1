@@ -117,9 +117,10 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
             ):
             (
                 <View className={`absolute top-2 left-2 right-2 z-10 flex-1 flex-row justify-${logoPosition}`}>
+                  {/* // <View style={{position:'absolute',top:2,left:2,right:2,zIndex:10,backgroundColor:'blue',flex:1,flexDirection:'row',justifyContent:`flex-end`}}> */}
                     {
                      (businessData.brandlogo && logoVisible) &&
-                    <Image source={{ uri:businessData.brandlogo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
+                       <Image source={{ uri:businessData.brandlogo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
                     }
                 </View>
             )
@@ -256,7 +257,8 @@ const styles = StyleSheet.create({
     height: height * 0.6,
     borderWidth:7,
     borderRadius:10,
-    borderColor:colors.ActiveColor
+    borderColor:colors.ActiveColor,
+    // display:'flex'
   },
   logoContainer: {
     position: 'absolute',

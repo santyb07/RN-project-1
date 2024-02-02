@@ -8,6 +8,9 @@ import { useDispatch } from 'react-redux'
 import { loginUser } from '../redux/features/authSlice'
 import HeaderBar from './components/HeaderBar'
 import { useRoute } from '@react-navigation/native'
+import { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import PhoneSignIn from '../utils/firebase/PhoneSignIn'
+import { Button } from '@rneui/themed'
 
 
 
@@ -17,11 +20,14 @@ interface VerifyOtpProps{
 }
 interface VerifyOtp {
   mobileNumber: string;
+  confirmData:FirebaseAuthTypes.ConfirmationResult | null
 }
 
 const VerifyOtp = ({navigation}:VerifyOtpProps) => {
   const route= useRoute();
-  const { mobileNumber } = route.params as VerifyOtp;
+  const { mobileNumber,confirmData } = route.params as VerifyOtp;
+  const [loading,setLoading] = useState<boolean | null>(null);
+
   // const mobileNumber=navigation.getState().routes[1].params?.mobileNumber;
   const dispatch = useDispatch();
   const [cnt,setCnt] = useState(0);
@@ -47,20 +53,19 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
 
   let isDisableVerify= f1!=='' && f2!=='' && f3!=='' && f4!=='' && f5!=='' && f6!==''? false:true;
 
-  const  handleVerify=()=>{
-    // if(cnt===0){
-    //   showMessage({
-    //     message: "Incorrect OTP",
-    //     // description: "This is our second message",
-    //     type: "danger",
-    //     titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
-    //     // backgroundColor:"#000000"
-    //   });
-    //   setCnt(1)
-    // }else{
-      dispatch(loginUser(mobileNumber))
-    // }
-   
+  const  handleVerify=async()=>{
+    try{
+      setLoading(true)
+      const otp=f1+f2+f3+f4+f5+f6;
+      // console.warn(confirmData)
+      const response = await confirmData?.confirm(otp)
+      // console.warn(response);
+      dispatch(loginUser({mobileNumber,userId:response?.user.uid}))
+      setLoading(false)
+    }catch(err){
+      setLoading(false);
+      console.log('Error in verifying the Otp',err)
+    }
   }
 
   useEffect(() => {
@@ -189,11 +194,62 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
         </Text>
        
       </View>
+      {
+          loading ? 
+          <View className='w-full justify-center items-center py-8'>
+          <Button
+          title="Login"
+          loading={true}
+          disabled={isDisableVerify}
+          loadingProps={{
+            size: 'large',
+            color: 'rgb(255, 255, 255)',
+          }}
+          titleStyle={{ fontFamily:'Montserrat-SemiBold',fontSize:20 }}
+          buttonStyle={{
+            backgroundColor: 'rgb(59,130,246)',
+            width:'100%',
+            borderColor: 'transparent',
+            borderWidth: 0,
+            borderRadius: 5,
+            // paddingVertical: 10,
+          }}
+          containerStyle={{
+            width: '100%',
+          }}
+        />
+        </View>:
+         <View className='w-full justify-center items-center py-8'>
+         <Button
+         title="Verify"
+        //  loading={true}
+         onPress={handleVerify}
+         loadingProps={{
+           size: 'large',
+           color: 'rgba(111, 202, 186, 1)',
+         }}
+         disabled={isDisableVerify}
+         titleStyle={{ fontFamily:'Montserrat-SemiBold',fontSize:20 }}
+         buttonStyle={{
+           backgroundColor: 'rgb(59,130,246)',
+           width:'100%',
+           borderColor: 'transparent',
+           borderWidth: 0,
+           borderRadius: 5,
+           paddingVertical: 14,
+         }}
+         containerStyle={{
+           width: '100%',
+         }}
+       />
+       </View>
+       }
       <View>
-      <TouchableOpacity className={`mt-5 py-2.5 rounded-md ${isDisableVerify? 'bg-gray-300':'bg-blue-500'}`}  onPress={handleVerify} disabled={isDisableVerify}>
+      {/* <TouchableOpacity className={`mt-5 py-2.5 rounded-md ${isDisableVerify? 'bg-gray-300':'bg-blue-500'}`}  onPress={handleVerify} disabled={isDisableVerify}>
         <Text className="text-white text-xl text-center font-['Montserrat-Bold']" >Verify</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       </View>
+      {/* <PhoneSignIn/> */}
 
     </View>
   )
