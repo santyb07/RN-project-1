@@ -16,6 +16,8 @@ import FeatherIcons from "react-native-vector-icons/Feather"
 import FlashMessage, { showMessage } from 'react-native-flash-message'
 // import { Share } from 'react-native';
 import Share from 'react-native-share';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/store';
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,13 +25,13 @@ const templateData={
     templateImg:'https://res.cloudinary.com/drxhgcqvw/image/upload/v1706686607/IMG-20240131-WA0003_dmda7w.jpg',
     promotion:false,
 }
-const businessData={
-    email:'webgraphagency@gmail.com',
-    website:'webgraphagency.com',
-    number:{number1:'98765543210',number2:'9876543210'},
-    brandlogo:'https://cdn.pixabay.com/photo/2019/01/23/21/16/pixabay-3951079_1280.png',
-    address:'Poonam sagar complex, mira road, 401107',
-}
+// const businessData={
+//     email:'webgraphagency@gmail.com',
+//     website:'webgraphagency.com',
+//     number:{number1:'98765543210',number2:'9876543210'},
+//     logo:'https://cdn.pixabay.com/photo/2019/01/23/21/16/pixabay-3951079_1280.png',
+//     address:'Poonam sagar complex, mira road, 401107',
+// }
 
 interface TemplateEditorProps{
     navigation: StackNavigationProp<RootStackParamList,"TemplateEditor">,
@@ -46,7 +48,8 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
   const [logoPosition,setLogoPosition] = useState('left');
   const viewShotRef = useRef(null);
   const [logoVisible,setLogoVisible]=useState<boolean | null>(true);
-
+  const businessData = useSelector((state:RootState)=>state.businessDetails)
+  // console.warn(businessData.logo)
   
   // console.warn(route.params)
     const adjustLogoSize=(height:number)=>{
@@ -108,8 +111,8 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
             (
                 <View className='absolute top-2 left-2 right-2 z-10 flex-1 flex-row justify-between'>
                 {
-                    (businessData.brandlogo && logoVisible) &&
-                    <Image source={{ uri:businessData.brandlogo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
+                    (businessData.logo && logoVisible) &&
+                    <Image source={{ uri:businessData.logo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
                 }
                   <Image source={{ uri:'https://res.cloudinary.com/drxhgcqvw/image/upload/v1705428150/ysxh4cpuke6va2sqhou8.png'}} style={{minHeight:50,minWidth:70}} resizeMode='contain'/>
         
@@ -119,8 +122,8 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
                 <View className={`absolute top-2 left-2 right-2 z-10 flex-1 flex-row justify-${logoPosition}`}>
                   {/* // <View style={{position:'absolute',top:2,left:2,right:2,zIndex:10,backgroundColor:'blue',flex:1,flexDirection:'row',justifyContent:`flex-end`}}> */}
                     {
-                     (businessData.brandlogo && logoVisible) &&
-                       <Image source={{ uri:businessData.brandlogo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
+                     (businessData.logo && logoVisible) &&
+                       <Image source={{ uri:businessData.logo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
                     }
                 </View>
             )
@@ -156,32 +159,32 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
         <View className='justify-center items-start'>
         {
 
-            businessData.number.number1 &&(
+            businessData.mobileNumber1 &&(
                 <View className='flex-row gap-x-1'>
             <MaterialIcons name='local-phone' size={15}/>
           <Text className='text-xs mx-2'>
-           {businessData.number.number1}</Text>
+           {businessData.mobileNumber1}</Text>
         </View>
         )
     }
         {
 
-            businessData.number.number2 &&(
+            businessData.mobileNumber2 &&(
                 <View className='flex-row gap-x-1'>
             <MaterialIcons name='local-phone' size={15}/>
           <Text className='text-xs mx-2'>
-           {businessData.number.number2}</Text>
+           {businessData.mobileNumber2}</Text>
         </View>
         )
     }
         </View>
         </View>
         {
-            businessData.address &&(
+            businessData.location &&(
             <View className=' bg-black flex-row py-2 px-2 justify-start items-center'>
             <MaterialIcons name='location-on' size={20} color={'white'}/>
           <Text className='text-xs text-white mx-3'>
-           {businessData.address}</Text>
+           {businessData.location}</Text>
         </View>)
         }
         </View>
@@ -222,7 +225,7 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
         }
        
         {
-            ((!promotion && businessData.brandlogo) && (logoVisible)) &&
+            ((!promotion && businessData.logo) && (logoVisible)) &&
             <View className='flex-row space-x-3 border py-1 mt-3 px-1 justify-around rounded-xl'>
             <FontAwesomeIcons name='align-left' size={25} onPress={()=>adjustLogoPosition('left')} style={{backgroundColor:`${logoPosition=='left'? colors.ActiveColor:'white'}`,color:`${logoPosition=='left'? 'white':'black'}`,padding:8,borderRadius:10}}/>
             <FontAwesomeIcons name='align-center' size={25} onPress={()=>adjustLogoPosition('center')} style={{backgroundColor:`${logoPosition=='center'? colors.ActiveColor:'white'}`,color:`${logoPosition=='center'? 'white':'black'}`,padding:8,borderRadius:10}}/>
@@ -231,13 +234,13 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
         }    
             </View>
             <View className=' absolute bottom-0 left-0 right-0 flex-row w-full py-1 justify-around'>
-        <TouchableOpacity onPress={()=>saveImage('download')} className='flex-row space-x-3 py-3 border rounded-xl px-3 bg-orange-400 border-white'>
-          <FeatherIcons name='download' size={30} color={'white'}/>
-          <Text className={'font-[Montserrat-Bold] text-lg text-white'}>Download</Text>
+        <TouchableOpacity onPress={()=>saveImage('download')} className='flex-row justify-center items-center space-x-3 py-3 border rounded-xl px-4 bg-orange-400 border-white'>
+          <FeatherIcons name='download' size={20} color={'white'}/>
+          <Text className={'font-[Montserrat-Medium] text-lg text-white'}>Download</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>saveImage('share')} className='flex-row  space-x-3 py-3 border rounded-xl px-8 bg-orange-400 border-white'>
-          <FeatherIcons name='share-2' size={30} color={'white'}/>
-          <Text className='font-[Montserrat-Bold] text-lg text-white'>Share</Text>
+      <TouchableOpacity onPress={()=>saveImage('share')} className='flex-row  space-x-3 py-3 border rounded-xl px-10 bg-orange-400 border-white'>
+          <FeatherIcons name='share-2' size={20} color={'white'}/>
+          <Text className='font-[Montserrat-Medium] text-lg text-white'>Share</Text>
       </TouchableOpacity>
         </View>
     </View>

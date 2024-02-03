@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native'
 
 import {RootStackParamList } from '../navigation/appNavigation';
@@ -13,6 +13,8 @@ import LeadsSummary from './components/LeadsSummary';
 import FontAwesomeIcons from "react-native-vector-icons/FontAwesome"
 import AdCard from './components/AdCard';
 import Animated, { FadeInLeft, FadeInRight, FadeInUp, FadeOutDown, FadeOutLeft } from 'react-native-reanimated';
+import { RootState } from '../redux/store/store';
+import { useSelector } from 'react-redux';
 
 
 interface HomeScreenProps{
@@ -20,7 +22,12 @@ interface HomeScreenProps{
 }
 
 const HomeScreen= (props:HomeScreenProps)  => {
+  const isUserLoggedIn = useSelector((state:RootState)=>state.auth.userLoggedIn)
 
+
+  // useEffect(()=>{
+  //   console.warn(isUserLoggedIn)
+  // },[])
   return (
     <SafeAreaView className='flex-1'>
     <View className='flex-1 mb-28'>

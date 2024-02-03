@@ -40,8 +40,8 @@ export const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const appNavigation = () => {
   const isUserLoggedIn = useSelector((state:RootState)=>state.auth.userLoggedIn)
-  // const {isLoading, userToken} = useContext(AuthContext);
 
+  
   useEffect(()=>{
     if(isUserLoggedIn){
       SplashScreen.hide(); 

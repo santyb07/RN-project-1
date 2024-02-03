@@ -28,7 +28,7 @@ const Login = ({navigation}:LoginScreenProps) => {
   const [number,setChangeNumber]= useState<string>("");
   const [toggleCheckBox, setToggleCheckBox] = useState<boolean>(true)
   const [confirmData,setConfirmData] = useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
-  const [loading,setLoading] = useState<boolean | null>(null);
+  const [loading,setLoading] = useState<boolean>(false);
   let disableLogin= (number.length===10 && toggleCheckBox==true) ? true:false;
   // console.warn(disableLogin);
   const onChanged =(text:string)=>{
@@ -40,9 +40,9 @@ const Login = ({navigation}:LoginScreenProps) => {
     try{
       setLoading(true);
       const mobileNumber= "+91" +number
-      const confirmation = await auth().signInWithPhoneNumber(mobileNumber)
-    console.log(confirmation)
-    setConfirmData(confirmation);
+      // const confirmation = await auth().signInWithPhoneNumber(mobileNumber)
+    // console.log(confirmation)
+    // setConfirmData(confirmation);
        showMessage({
         message: "OTP Sent Successfully",
         // description: "This is our second message",

@@ -10,6 +10,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/appNavigation';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { clearBusinessDetails } from '../../redux/features/businessDetailsSlice';
 
 const data = [
   {
@@ -70,7 +72,9 @@ const BusinessDetails = () => {
 
 
   const handleLogout=async()=>{
-    await logoutDispatch(logoutUser())
+    // await Auth().signOut();
+    await logoutDispatch(clearBusinessDetails());
+    await logoutDispatch(logoutUser());
   }
   const navigateToEditDetails=()=>{
     navigation.navigate('EditBusinessDetails');
@@ -129,17 +133,16 @@ const BusinessDetails = () => {
           <FontAwesomeIcons5 name='instagram-square' size={40} color={'#ffffff'}/>
   </LinearGradient>
         </TouchableOpacity>
-        <LinearGradient
+        {/* <LinearGradient
           colors={['#CA1D7E', '#E35157', '#F2703F']}
           start={{x: 0.0, y: 1.0}} end={{x: 1.0, y: 1.0}}
           style={{borderRadius:10}}
-          // style={{ height: 52,width: 52,alignItems: 'center',justifyContent: 'center',borderRadius:82 / 2}}
-          >
-        <TouchableOpacity className='flex-row space-x-2 px-10 py-2 border-2 border-white rounded-md' onPress={handleLogout}>
-          <FontAwesomeIcons name='sign-out' size={30} color={'white'}/>
-          <Text className='font-[Montserrat-Regular] text-base text-white'>Logout</Text>
+          > */}
+        <TouchableOpacity className='flex-row space-x-2 px-10 py-2 border-2 border-gray-800 rounded-md' onPress={handleLogout}>
+          <FontAwesomeIcons name='sign-out' size={30} color={'gray'}/>
+          <Text className='font-[Montserrat-Regular] text-base text-gray-700'>Logout</Text>
         </TouchableOpacity>
-  </LinearGradient>
+  {/* </LinearGradient> */}
         <View>
         <Text className='font-[Montserrat-Regular] text-sm'>Version 1.0.1</Text>
         </View>

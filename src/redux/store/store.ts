@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import OnboardReducer from '../features/onboardSlice'
 import authReducer from '../features/authSlice'
+import businessReducer from '../features/businessDetailsSlice'
 
 import { combineReducers } from '@reduxjs/toolkit'
 import persistReducer from 'redux-persist/es/persistReducer'
@@ -16,7 +17,8 @@ let persistConfing={
 
 let rootReducer = combineReducers({
   onboarding: OnboardReducer,
-  auth: authReducer
+  auth: authReducer,
+  businessDetails:businessReducer
 })
 
  

@@ -8,11 +8,9 @@ import { useDispatch } from 'react-redux'
 import { loginUser } from '../redux/features/authSlice'
 import HeaderBar from './components/HeaderBar'
 import { useRoute } from '@react-navigation/native'
-import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import PhoneSignIn from '../utils/firebase/PhoneSignIn'
 import { Button } from '@rneui/themed'
-
-
+import Auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 
 
 interface VerifyOtpProps{
@@ -26,7 +24,7 @@ interface VerifyOtp {
 const VerifyOtp = ({navigation}:VerifyOtpProps) => {
   const route= useRoute();
   const { mobileNumber,confirmData } = route.params as VerifyOtp;
-  const [loading,setLoading] = useState<boolean | null>(null);
+  const [loading,setLoading] = useState<boolean>(false);
 
   // const mobileNumber=navigation.getState().routes[1].params?.mobileNumber;
   const dispatch = useDispatch();
@@ -58,10 +56,18 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
       setLoading(true)
       const otp=f1+f2+f3+f4+f5+f6;
       // console.warn(confirmData)
-      const response = await confirmData?.confirm(otp)
-      // console.warn(response);
-      dispatch(loginUser({mobileNumber,userId:response?.user.uid}))
+      // const response = await confirmData?.confirm(otp)
+
+      // showMessage({
+      //   message: "Logged In Successfully",
+      //   // description: "This is our second message",
+      //   type: "success",
+      //   titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
+      //   // backgroundColor:"#000000"
+      // });
       setLoading(false)
+      // console.warn(Auth().currentUser?.uid);
+      dispatch(loginUser({mobileNumber,userId:Auth().currentUser?.uid}))
     }catch(err){
       setLoading(false);
       console.log('Error in verifying the Otp',err)

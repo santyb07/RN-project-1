@@ -16,7 +16,7 @@ const HeaderBar = ({logo,name,help,search}:headerBarProps) => {
     const logoutDispatch = useDispatch();
 
     const handleLogout=()=>{
-        logoutDispatch(logoutUser())
+        // logoutDispatch(logoutUser())
     }
   return (
     <View className='w-full flex-row bg-white px-5 py-2 justify-between items-center'>
