@@ -9,17 +9,21 @@ export interface businessDetailsProps{
         logo:string | null,
         mobileNumber1:string | null,
         mobileNumber2:string | null,
-        website:string | null
+        website:string | null,
+        selectedFrame:string | null,
+        designation : string | null,
 }
 
 const initialState: businessDetailsProps= {
-    businessName:'',
-    email:'',
-    location:'',
-    logo:'',
-    mobileNumber1:'',
-    mobileNumber2:'',
-    website:'',
+    businessName:null,
+    email:null,
+    location:null,
+    logo:null,
+    mobileNumber1:null,
+    mobileNumber2:null,
+    website:null,
+    selectedFrame:'frame1',
+    designation :null,
 }
 
 export const businessDetailsSlice = createSlice({
@@ -34,16 +38,26 @@ export const businessDetailsSlice = createSlice({
         state.mobileNumber2 =action.payload.mobileNumber2;
         state.website =action.payload.website;
         state.location =action.payload.location;
+        state.designation= action.payload.designation ? action.payload.designation :null
     },
     clearBusinessDetails:(state)=>{
-        state.businessName ='';
-        state.email ='';
-        state.mobileNumber1 ='';
-        state.mobileNumber2 ='';
-        state.website ='';
-        state.location ='';
+        state.businessName =null;
+        state.email =null;
+        state.mobileNumber1 =null;
+        state.mobileNumber2 =null;
+        state.website =null;
+        state.location =null;
         // console.warn('user loggedin');
     },
+    selectFrame:(state,action)=>{
+      if(action.payload){
+        // console.warn('frame selected',action.payload);
+        state.selectedFrame= action.payload;
+      }
+      // else{
+      //   console.warn('frame not selected',action.payload);
+      // }
+    }
   },
   extraReducers:builder=>{
     builder.addCase(PURGE,()=>{
@@ -55,6 +69,6 @@ export const businessDetailsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {addBusinessDetails, clearBusinessDetails} = businessDetailsSlice.actions
+export const {addBusinessDetails, clearBusinessDetails, selectFrame} = businessDetailsSlice.actions
 
 export default businessDetailsSlice.reducer

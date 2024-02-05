@@ -20,6 +20,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/appNavigation';
 import { useDispatch } from 'react-redux'
 import { addBusinessDetails } from '../../redux/features/businessDetailsSlice';
+import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 
 type businessDetailsProps={
   image:string,
@@ -39,6 +40,8 @@ const validationSchema = yup.object().shape({
   email: yup.string().email('Invalid email address').required('Email is required'),
   website: yup.string(),
   location: yup.string().required('Location is required'),
+  designation: yup.string(),
+
 });
 
 interface EditBusinessDetailsProps{
@@ -59,7 +62,8 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
     ImagePicker.openPicker({
       // width: null,
       // height: 'auto',
-      cropping: true
+      cropping: true,
+      compressImageQuality:0.3
     }).then(image => {
       // console.log(image.path);
       setImg(image.path)
@@ -71,14 +75,16 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
   const handleSubmit =async(values: any) => {
     try{
       setLoading(true);
+      // await CameraRoll.saveToCameraRoll(img)
       const details={
         businessName:values.businessName,
         email:values.email,
         location:values.location,
         logo: img ? img : "https://res.cloudinary.com/drxhgcqvw/image/upload/v1705428150/ysxh4cpuke6va2sqhou8.png",
-        mobileNumber1:`+91`+ values.mobileNumber1,
-        mobileNumber2:`+91`+ values.mobileNumber2,
-        website:values.website
+        mobileNumber1:values.mobileNumber1,
+        mobileNumber2:values.mobileNumber2,
+        website:values.website,
+        designation:values.designation
       }
       // console.warn(details)
       //store in localstorage
@@ -121,14 +127,16 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
       <FontAwesomeIcon name="edit" color={"#4287f5"} size={25}/>
       </TouchableOpacity>
       </View>
+      <ScrollView>
       <Formik
       initialValues={{
         businessName: businessData.businessName,
         mobileNumber1: userData.mobileNumber,
-        mobileNumber2: "",
+        mobileNumber2: businessData.mobileNumber2 || "",
         email: businessData.email,
         website: businessData.website,
         location: businessData.location,
+        designation: businessData.designation
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -387,7 +395,52 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
         underlineColorAndroid='transparent'        
         // inputStyle={{borderWidth:4}}
         />
+        <Input
+        placeholder='Designation'
+        value={values.designation}
+        onChangeText={handleChange('designation')}
+        // errorMessage={(errors.mobileNumber1 && typeof errors.mobileNumber1 === 'string') ? errors.mobileNumber1:''}
+        // keyboardType='numeric'
+        maxLength={10}
+        leftIcon={
+          <SimpleLineIcons
+          name='screen-smartphone'
+          size={18}
+          color='black'
+        />}
+          inputContainerStyle={{
+            borderBottomWidth:2,
+            borderWidth:2,
+            justifyContent:'center',
+            alignItems:'center',
+            paddingHorizontal:20,
+            paddingVertical:2,
+            borderRadius:10,
+            marginBottom:0
+          }}
+          inputStyle={{
+            // borderBottomColor:'white',
+            // paddingBottom:20
+            // paddingVertical:0
+            fontSize:16            
+          }}
+        containerStyle={{
+          // borderWidth:1,
+          paddingHorizontal:0,
+          paddingBottom:0
+          // paddingVertical:0,
+          // justifyContent:'center',
+          // alignItems:'center',
+          // borderRadius:10
+          // padding:0,
+          // margin:0
+          
+        }}
+        underlineColorAndroid='transparent'        
+        // inputStyle={{borderWidth:4}}
+        />
         </View>
+        
         {/* <View style={{ marginHorizontal: 10 }}>
             <TouchableOpacity style={{ backgroundColor: '#FFA500', paddingVertical: 10, borderRadius: 5 }} onPress={()=>handleSubmit()}>
               <Text style={{ fontSize: 18, textAlign: 'center', color: 'white' }}>Save</Text>
@@ -444,6 +497,7 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
           </View>
       )}
     </Formik>
+    </ScrollView>
     </ScrollView>
     </View>
   )

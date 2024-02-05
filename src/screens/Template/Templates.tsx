@@ -9,6 +9,7 @@ import { BottomTabParamList } from '../../navigation/AppStack';
 import { useNavigation } from '@react-navigation/native';
 import TemplateScroll from './components/TemplateScroll';
 import { ScrollView } from 'react-native';
+import KarykartaTemp from './components/KaryKartaTemp';
 
 
 const {width, height} = Dimensions.get('window');
@@ -68,10 +69,11 @@ const Templates = () => {
     <ScrollView className=''>
     <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Editors Choice'/>
     <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Good Morning'/>
-    <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Jai Shree Ram'/>
+    {/* <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Jai Shree Ram'/>
     <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Goood Night'/>
     <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Motivation'/>
-   <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Job Posting'/>
+   <TemplateScroll templateData={templateData} navigateToEditor={navigateToEditor} categoryName='Job Posting'/> */}
+   {/* <KarykartaTemp/> */}
     </ScrollView>
   </View>
   )

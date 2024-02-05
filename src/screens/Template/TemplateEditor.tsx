@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, Image, Text, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity, SafeAreaView } from 'react-native';
-import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import AntIcons from "react-native-vector-icons/AntDesign"
 import FontAwesomeIcons from "react-native-vector-icons/FontAwesome"
 import IonicAwesomeIcons from "react-native-vector-icons/Ionicons"
@@ -10,28 +10,23 @@ import { Button, Slider } from '@rneui/base';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/appNavigation';
 import { useRoute } from '@react-navigation/native';
-import ViewShot, { captureRef } from 'react-native-view-shot';
+import { captureRef } from 'react-native-view-shot';
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import FeatherIcons from "react-native-vector-icons/Feather"
-import FlashMessage, { showMessage } from 'react-native-flash-message'
-// import { Share } from 'react-native';
+import { showMessage } from 'react-native-flash-message'
 import Share from 'react-native-share';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
-
-const { width, height } = Dimensions.get('window');
-
-const templateData={
-    templateImg:'https://res.cloudinary.com/drxhgcqvw/image/upload/v1706686607/IMG-20240131-WA0003_dmda7w.jpg',
-    promotion:false,
-}
-// const businessData={
-//     email:'webgraphagency@gmail.com',
-//     website:'webgraphagency.com',
-//     number:{number1:'98765543210',number2:'9876543210'},
-//     logo:'https://cdn.pixabay.com/photo/2019/01/23/21/16/pixabay-3951079_1280.png',
-//     address:'Poonam sagar complex, mira road, 401107',
-// }
+import Frame1 from './components/frames/Frame1';
+import Frame2 from './components/frames/Frame2';
+import Frame3 from './components/frames/Frame3';
+import Frame4 from './components/frames/Frame4';
+import Frame5 from './components/frames/Frame5';
+import Frame6 from './components/frames/Frame6';
+import Frame7 from './components/frames/Frame7';
+import Frame8 from './components/frames/Frame8';
+import HeaderBar from '../components/HeaderBar';
+import TemplateHeaderBar from './components/TempHeaderBar';
 
 interface TemplateEditorProps{
     navigation: StackNavigationProp<RootStackParamList,"TemplateEditor">,
@@ -49,7 +44,7 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
   const viewShotRef = useRef(null);
   const [logoVisible,setLogoVisible]=useState<boolean | null>(true);
   const businessData = useSelector((state:RootState)=>state.businessDetails)
-  // console.warn(businessData.logo)
+  // console.warn(businessData.selectedFrame)
   
   // console.warn(route.params)
     const adjustLogoSize=(height:number)=>{
@@ -66,18 +61,19 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
         try{
           const uri= await captureRef(viewShotRef,{
             fileName:'webBrand',
-            // format:'png',
-            quality:0.9,
+            format:'jpg',
+            //only jpeg images will be compressed
+            quality:0.2
           })
           if(action=='share'){
-            await Share.open({message:'Made in ❤ By WebBrand',url:uri})
+            await Share.open({message:'Made in ❤ with WebBrand',url:uri})
             .then((res) => {
               console.log(res);
             })
             .catch((err) => {err && console.log(err);
             });
           }else{
-            await CameraRoll.saveToCameraRoll(uri)
+            await CameraRoll.saveAsset(uri)
             .then((resp) =>{
               console.warn(resp.node.image.uri)
               showMessage({
@@ -98,12 +94,12 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
       }
        
     };
-    
+
   return (
-    
     <View className='flex-1 justify-start items-center bg-white'>
+      <TemplateHeaderBar saveImage={saveImage}/>
       {/* Image container with logos and text */} 
-      <View style={styles.imageContainer} ref={viewShotRef}>
+      <View className={`relative w-full h-[60vh]`} ref={viewShotRef} collapsable={false}>
         {/* Logos on left and right */}
         
         {
@@ -119,79 +115,51 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
                 </View>
             ):
             (
-                <View className={`absolute top-2 left-2 right-2 z-10 flex-1 flex-row justify-${logoPosition}`}>
-                  {/* // <View style={{position:'absolute',top:2,left:2,right:2,zIndex:10,backgroundColor:'blue',flex:1,flexDirection:'row',justifyContent:`flex-end`}}> */}
-                    {
-                     (businessData.logo && logoVisible) &&
-                       <Image source={{ uri:businessData.logo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
-                    }
-                </View>
+              // <View className={`absolute top-2 left-2 right-2 z-10 flex-1 flex-row justify-${logoPosition}`}>
+              <View style={{position:'absolute',top:12,left:12,right:2,zIndex:10,flex:1,flexDirection:'row',justifyContent:`${logoPosition=='center'? 'center':(logoPosition=='left'? 'flex-start':'flex-end')}`,}}> 
+                {
+                  (businessData.logo && logoVisible) &&
+                  <Image source={{ uri:businessData.logo}} style={{minHeight:logoSize.height,minWidth:logoSize.width}} resizeMode='contain'/>
+                }
+            </View>
             )
         }
 
         {/* Main image taking full width and 50% of the screen height */}
-        <Image source={{uri:templateImg}} style={styles.image}/>
+        <Image source={{uri:templateImg}} className='flex-1' resizeMode='contain'/>
 
         {/* Text details above the image */}
-       
-        <View className='w-full absolute bottom-0'>
-        <View className='flex-row space-x-5 items-cnter px-5 py-1 bg-white'>
-        <View className='justify-center items-start'>
-        {
-            businessData.email && 
-            <View className='flex-row'>
-            <MaterialIcons name='email' size={15} />
-          <Text className='text-xs mx-2'>
-           {businessData.email}</Text>
-        </View>
+        {businessData.selectedFrame==='frame1' &&
+                <Frame1/>
         }
-           {
-            businessData.website && 
-            <View className='flex-row'>
-            <AntIcons name='earth' size={15} />
-          <Text className='text-xs mx-2'>
-           {businessData.website}</Text>
-        </View>
+        {businessData.selectedFrame==='frame2' &&
+                <Frame2/>
         }
-        
-       
-        </View>
-        <View className='justify-center items-start'>
-        {
-
-            businessData.mobileNumber1 &&(
-                <View className='flex-row gap-x-1'>
-            <MaterialIcons name='local-phone' size={15}/>
-          <Text className='text-xs mx-2'>
-           {businessData.mobileNumber1}</Text>
-        </View>
-        )
-    }
-        {
-
-            businessData.mobileNumber2 &&(
-                <View className='flex-row gap-x-1'>
-            <MaterialIcons name='local-phone' size={15}/>
-          <Text className='text-xs mx-2'>
-           {businessData.mobileNumber2}</Text>
-        </View>
-        )
-    }
-        </View>
-        </View>
-        {
-            businessData.location &&(
-            <View className=' bg-black flex-row py-2 px-2 justify-start items-center'>
-            <MaterialIcons name='location-on' size={20} color={'white'}/>
-          <Text className='text-xs text-white mx-3'>
-           {businessData.location}</Text>
-        </View>)
+        {businessData.selectedFrame==='frame3' &&
+                <Frame3/>
+        }
+        {businessData.selectedFrame==='frame4' &&
+                <Frame4/>
+        }
+        {businessData.selectedFrame==='frame5' &&
+                <Frame5/>
+        }
+        {businessData.selectedFrame==='frame6' &&
+                <Frame6/>
+        }
+        {businessData.selectedFrame==='frame7' &&
+                <Frame7/>
+        }
+         {businessData.selectedFrame==='frame8' &&
+                <Frame8/>
+        }
+        {!businessData.selectedFrame &&
+                <Frame1/>
         }
         </View>
-        </View>
-        <View className='flex-col w-full px-10 py-3'>
-        <View className='flex-row justify-between space-x-3'>
-        <Text className='text-xl font-[Montserrat-Bold]'>Logo</Text>
+        <View className='flex-col mt-10 px-3 py-3 rounded-md border-gray-400 border-2'>
+        <View className='flex-row justify-between space-x-4 items-center'>
+        <Text className='text-lg font-[Montserrat-Bold]'>Logo</Text>
         {
           logoVisible ? 
           (
@@ -205,35 +173,42 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
           ) 
         }
         </View>
-        {
-          logoVisible && 
-          <View className='flex-row w-full justify-around
-          items-center space-x-3 border rounded-xl  py-1 px-1 mt-3'>
-         <IonicAwesomeIcons name='resize-outline' size={30} style={{alignItems:'center',justifyContent:'center',borderColor:'#494848'}}/>
+        <View className=' flex-row space-x-4 justify-center item-center'>
+        
+          <View className='flex-row justify-around items-center space-x-3 border rounded-xl  py-1 px-3 mt-3'>
+         {/* <IonicAwesomeIcons name='resize-outline' size={30} style={{alignItems:'center',justifyContent:'center',borderColor:'#494848'}}/> */}
          <Slider
-             style={{ width: 150 }}
-             minimumValue={20}
-             maximumValue={70}
+             style={{ width: 80}}
+            //  minimumValue={20}
+            //  maximumValue={70}
+            disabled={!logoVisible}
+             minimumValue={10}
+             maximumValue={90}
              step={1}
              value={logoSize.height}
              trackStyle={{ height: 3, backgroundColor:'blue'}}
-             thumbStyle={{ height: 15, width: 15, backgroundColor:`${colors.ActiveColor2}` }}
+             thumbStyle={{ height: 15, width: 15, backgroundColor:`${colors.ActiveColor}` }}
              onValueChange={(value:number) => adjustLogoSize(value)}
              />
          <Text className='text-xl font-["Montserrat-Semibold"]'>{logoSize.height}</Text>
          </View>
-        }
-       
+        
         {
-            ((!promotion && businessData.logo) && (logoVisible)) &&
+            ((!promotion && businessData.logo) && (logoVisible)) ?
             <View className='flex-row space-x-3 border py-1 mt-3 px-1 justify-around rounded-xl'>
             <FontAwesomeIcons name='align-left' size={25} onPress={()=>adjustLogoPosition('left')} style={{backgroundColor:`${logoPosition=='left'? colors.ActiveColor:'white'}`,color:`${logoPosition=='left'? 'white':'black'}`,padding:8,borderRadius:10}}/>
             <FontAwesomeIcons name='align-center' size={25} onPress={()=>adjustLogoPosition('center')} style={{backgroundColor:`${logoPosition=='center'? colors.ActiveColor:'white'}`,color:`${logoPosition=='center'? 'white':'black'}`,padding:8,borderRadius:10}}/>
             <FontAwesomeIcons name='align-right' size={25} onPress={()=>adjustLogoPosition('end')} style={{backgroundColor:`${logoPosition=='end'? colors.ActiveColor:'white'}`,color:`${logoPosition=='end'? 'white':'black'}`,padding:8,borderRadius:10}}/>
-        </View>
+        </View>:
+         <View className='flex-row space-x-3 border py-1 mt-3 px-1 justify-around rounded-xl'>
+         <FontAwesomeIcons name='align-left' size={25} onPress={()=>adjustLogoPosition('left')} style={{backgroundColor:'white',color:'black',padding:8,borderRadius:10}}/>
+         <FontAwesomeIcons name='align-center' size={25} onPress={()=>adjustLogoPosition('center')} style={{backgroundColor:'white',color:'black',padding:8,borderRadius:10}}/>
+         <FontAwesomeIcons name='align-right' size={25} onPress={()=>adjustLogoPosition('end')} style={{backgroundColor:'white',color:'black',padding:8,borderRadius:10,}}/>
+     </View>
         }    
-            </View>
-            <View className=' absolute bottom-0 left-0 right-0 flex-row w-full py-1 justify-around'>
+            </View>  
+        </View>
+            {/* <View className=' absolute bottom-0 left-0 right-0 flex-row w-full py-1 justify-around'>
         <TouchableOpacity onPress={()=>saveImage('download')} className='flex-row justify-center items-center space-x-3 py-3 border rounded-xl px-4 bg-orange-400 border-white'>
           <FeatherIcons name='download' size={20} color={'white'}/>
           <Text className={'font-[Montserrat-Medium] text-lg text-white'}>Download</Text>
@@ -243,69 +218,25 @@ const TemplateEditor = ({navigation}:TemplateEditorProps) => {
           <Text className='font-[Montserrat-Medium] text-lg text-white'>Share</Text>
       </TouchableOpacity>
         </View>
+         */}
+        <View className=' absolute bottom-0 px-4 left-0 right-0 w-full py-2'>
+        <TouchableOpacity onPress={()=>navigation.navigate('ChooseFrame')} className='flex-row justify-center items-center space-x-3 py-3 border rounded-xl px-4 border-black'>
+          <MaterialIcons name='image-frame' size={24} color={'black'}/>
+          <Text className={'font-[Montserrat-Medium] text-lg text-black'}>Select Frames</Text>
+          <FeatherIcons name='arrow-right' size={24} color={'black'}/>
+      </TouchableOpacity>
+        </View>
+        
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position:'relative',
-  },
-  imageContainer: {
-    position: 'relative',
-    width: width,
-    height: height * 0.6,
-    borderWidth:7,
-    borderRadius:10,
-    borderColor:colors.ActiveColor,
-    // display:'flex'
-  },
-  logoContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    right: 10,
-    zIndex: 1,
-    display:'flex',
-    // height:70,
-    flexDirection:'row',
-    justifyContent:'space-between',
-    // backgroundColor:'yellow'
-  },
-  logo: {
-    // width: 50,
-    // width:null,
-    // height:null,
-    // height: 50,
-    minHeight:50,
-    minWidth:70,
-    resizeMode: 'contain',
-  },
-  logoR: {
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-  },
   image: {
     flex: 1,
     width: null,
     height: null,
     resizeMode: 'contain',
-  },
-  textContainer: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    right: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 10,
-  },
-  text: {
-    color: 'white',
-    fontSize: 16,
   },
 });
 

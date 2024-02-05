@@ -17,6 +17,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import AccountOverview from '../screens/components/AccountOverview';
 import DownloadShareTemplate from '../screens/Template/components/DownloadShareTemplate';
 import EditBusinessDetails from '../screens/business/EditBusinessDetails';
+import Frame1 from '../screens/Template/components/frames/Frame1';
+import ChooseFrame from '../screens/Template/ChooseFrame';
 
 export type BottomTabParamList ={
  Main: undefined,
@@ -114,8 +116,9 @@ function AppStack() {
            }}
     >
       <Stack.Screen name="Home" component={HomeTabs} options={{headerShown:false}} />
-      <Stack.Screen name="TemplateEditor" component={TemplateEditor} options={{headerShown:true,title:'Edit Template'}}/>
+      <Stack.Screen name="TemplateEditor" component={TemplateEditor} options={{headerShown:false,title:'Edit Template'}}/>
       <Stack.Screen name="EditBusinessDetails" component={EditBusinessDetails} options={{headerShown:true,title:'Edit Your Business'}}/>
+      <Stack.Screen name="ChooseFrame" component={ChooseFrame} options={{headerShown:true,title:'Choose Frame'}}/>
       <Stack.Screen name="DownloadShareTemplate" component={DownloadShareTemplate} options={{headerShown:true,title:'Share & Post'}}/>
   </Stack.Navigator>
   );

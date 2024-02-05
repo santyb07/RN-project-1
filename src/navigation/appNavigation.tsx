@@ -33,7 +33,8 @@ export type RootStackParamList={
   EditBusinessDetails:undefined,
   DownloadShareTemplate:{
     templateLocation:string,
-  }  
+  },
+  ChooseFrame:undefined
 }
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();

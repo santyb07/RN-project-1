@@ -3,7 +3,7 @@ import React from 'react'
 import { colors } from '../../utils/constants';
 import FontAwesomeIcons from "react-native-vector-icons/FontAwesome"
 import FontAwesomeIcons5 from "react-native-vector-icons/FontAwesome5"
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/features/authSlice';
 import HeaderBar from '../components/HeaderBar';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,6 +12,7 @@ import { RootStackParamList } from '../../navigation/appNavigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { clearBusinessDetails } from '../../redux/features/businessDetailsSlice';
+import { RootState } from '../../redux/store/store';
 
 const data = [
   {
@@ -69,6 +70,8 @@ const data = [
 const BusinessDetails = () => {
   const logoutDispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
+  const businessData = useSelector((state:RootState)=>state.businessDetails)
+
 
 
   const handleLogout=async()=>{
@@ -91,9 +94,9 @@ const BusinessDetails = () => {
         style={{borderRadius:50}}
         />
         <View className='pr-12'>
-          <Text className='text-xl font-[Montserrat-SemiBold] text-white'>Test Account</Text>
-          <Text className='text-sm font-[Montserrat-Regular] text-white'>Poonam Sagar Complex, Mira road,Thane 401107</Text>
-          <Text className='text-sm font-[Montserrat-Regular] text-white'>+91 9876543210</Text>
+          <Text className='text-xl font-[Montserrat-SemiBold] text-white'>{businessData.businessName ? businessData.businessName:'Your Name'}</Text>
+          <Text className='text-sm font-[Montserrat-Regular] text-white'>{businessData.location ? businessData.location:'Poonam Sagar Complex, Mira road,Thane 401107'}</Text>
+          <Text className='text-sm font-[Montserrat-Regular] text-white'>{businessData.mobileNumber1 ? businessData.mobileNumber1:'+91 999999999'}</Text>
           <TouchableOpacity className='pt-2 flex-row space-x-1 justify-start items-center' onPress={navigateToEditDetails}>
             <Text className='text-xs font-[Montserrat-Regular] text-white'>Edit Details</Text>
             <FontAwesomeIcons name='angle-right' size={20} color={'white'}/>
