@@ -27,6 +27,9 @@ const FrameData=[
     'frame6',
     'frame7',
     'frame8',
+    'frame9',
+    'frame10',
+    'frame11',
 ]
 
 interface ChooseFrameProps{

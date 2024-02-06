@@ -24,7 +24,7 @@ const Frame5 = () => {
             </View>
             
             <View className='w-full'>
-                <Text className='text-xl'>{businessData.businessName ? businessData.businessName:"your name"}</Text>
+                <Text className='text-xl font-[Montserrat-SemiBold]'>{businessData.businessName ? businessData.businessName:"your name"}</Text>
                 <Text className='text-base'>{businessData.designation? businessData.designation:"designation"}</Text>
             </View>
             </View>

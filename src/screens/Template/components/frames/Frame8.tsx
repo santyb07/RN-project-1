@@ -11,7 +11,7 @@ const Frame8 = () => {
     const businessData = useSelector((state:RootState)=>state.businessDetails)
 
   return (
-    <View className='w-full absolute bottom-0 border-b-4 rounded-xl'>
+    <View className='w-full absolute bottom-0'>
         <View className='flex-row space-x-5 items-cnter px-5 py-1 bg-white'>
         <View className='justify-center items-start'>
         {
@@ -58,7 +58,7 @@ const Frame8 = () => {
         </View>
         {
             businessData.location &&(
-            <View className=' bg-black flex-row py-2 px-2 justify-start items-center rounded-b-lg'>
+            <View className=' bg-black flex-row py-2 px-2 justify-start items-center'>
             <MaterialIcons name='location-on' size={20} color={'white'}/>
           <Text className='text-xs text-white mx-3'>
            {businessData.location}</Text>
