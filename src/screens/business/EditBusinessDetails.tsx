@@ -54,7 +54,8 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
   const [img, setImg] = useState<string>("");
   const [loading,setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  
+
+  // console.warn(businessData)
 
 
   // console.warn(Auth().currentUser?.uid)
@@ -91,10 +92,10 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
       dispatch(addBusinessDetails(details))
 
       // Perform your submit logic here, e.g., API call or state update
-      // const response = await firestore()
-      // .collection('users')
-      // .doc(Auth().currentUser?.uid).
-      // set(details);
+      const response = await firestore()
+      .collection('users')
+      .doc(userData.userId).
+      set(details);
       // console.warn(response);
       showMessage({
         message: "Details updated Successfully",

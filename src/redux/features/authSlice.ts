@@ -5,13 +5,13 @@ import {PURGE} from "redux-persist"
 export interface OnboardState {
     userLoggedIn: boolean | null,
     mobileNumber: number | null,
-    userId:string | null,
+    userId:string | undefined,
 }
 
 const initialState: OnboardState = {
     userLoggedIn: false,
     mobileNumber: null,
-    userId: null,
+    userId: undefined,
 }
 
 export const authSlice = createSlice({

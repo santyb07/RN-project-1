@@ -34,7 +34,8 @@ export type RootStackParamList={
   DownloadShareTemplate:{
     templateLocation:string,
   },
-  ChooseFrame:undefined
+  ChooseFrame:undefined,
+  TestNotification:undefined
 }
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();

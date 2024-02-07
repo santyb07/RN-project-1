@@ -19,6 +19,7 @@ import DownloadShareTemplate from '../screens/Template/components/DownloadShareT
 import EditBusinessDetails from '../screens/business/EditBusinessDetails';
 import Frame1 from '../screens/Template/components/frames/Frame1';
 import ChooseFrame from '../screens/Template/ChooseFrame';
+import TestNotification from '../screens/TestNotification';
 
 export type BottomTabParamList ={
  Main: undefined,
@@ -120,6 +121,7 @@ function AppStack() {
       <Stack.Screen name="EditBusinessDetails" component={EditBusinessDetails} options={{headerShown:true,title:'Edit Your Business'}}/>
       <Stack.Screen name="ChooseFrame" component={ChooseFrame} options={{headerShown:true,title:'Choose Frame'}}/>
       <Stack.Screen name="DownloadShareTemplate" component={DownloadShareTemplate} options={{headerShown:true,title:'Share & Post'}}/>
+      <Stack.Screen name="TestNotification" component={TestNotification} options={{headerShown:true,title:'Back'}}/>
   </Stack.Navigator>
   );
 }

@@ -40,9 +40,9 @@ const Login = ({navigation}:LoginScreenProps) => {
     try{
       setLoading(true);
       const mobileNumber= "+91" +number
-      // const confirmation = await auth().signInWithPhoneNumber(mobileNumber)
-    // console.log(confirmation)
-    // setConfirmData(confirmation);
+      const confirmation = await auth().signInWithPhoneNumber(mobileNumber)
+    console.log(confirmation)
+    setConfirmData(confirmation);
        showMessage({
         message: "OTP Sent Successfully",
         // description: "This is our second message",

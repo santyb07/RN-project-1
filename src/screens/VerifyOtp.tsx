@@ -11,6 +11,8 @@ import { useRoute } from '@react-navigation/native'
 import PhoneSignIn from '../utils/firebase/PhoneSignIn'
 import { Button } from '@rneui/themed'
 import Auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import firestore from "@react-native-firebase/firestore"
+import { getToken } from '../utils/firebase/CommonUtils'
 
 
 interface VerifyOtpProps{
@@ -26,7 +28,6 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
   const { mobileNumber,confirmData } = route.params as VerifyOtp;
   const [loading,setLoading] = useState<boolean>(false);
 
-  // const mobileNumber=navigation.getState().routes[1].params?.mobileNumber;
   const dispatch = useDispatch();
   const [cnt,setCnt] = useState(0);
   const [seconds,setSeconds] = useState(30);
@@ -56,23 +57,61 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
       setLoading(true)
       const otp=f1+f2+f3+f4+f5+f6;
       // console.warn(confirmData)
-      // const response = await confirmData?.confirm(otp)
+      const response = await confirmData?.confirm(otp)
 
-      // showMessage({
-      //   message: "Logged In Successfully",
-      //   // description: "This is our second message",
-      //   type: "success",
-      //   titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
-      //   // backgroundColor:"#000000"
-      // });
+      showMessage({
+        message: "Logged In Successfully",
+        // description: "This is our second message",
+        type: "success",
+        titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
+        // backgroundColor:"#000000"
+      });
       setLoading(false)
       // console.warn(Auth().currentUser?.uid);
-      dispatch(loginUser({mobileNumber,userId:Auth().currentUser?.uid}))
     }catch(err){
       setLoading(false);
       console.log('Error in verifying the Otp',err)
     }
   }
+  async function onAuthStateChanged(user:any) {
+    if (user) {
+      console.log(user)
+      const notifyToken= getToken();
+
+      const documentRef = await  (firestore() as any).collection('tokens').doc(user.uid);
+      await documentRef.get()
+      .then((docSnapshot:any) => {
+        if (docSnapshot.exists) {
+      console.log('Document already exists');
+    } else {
+      // Document doesn't exist, save the data
+      documentRef.set({token:notifyToken})
+        .then(() => {
+          console.log('Document saved successfully');
+        })
+        .catch((error:any )=> {
+          console.log('Error saving document:', error);
+        });
+    }
+  }) .catch((error:any) => {
+    console.log('Error checking document:', error);
+  });
+
+      // await firestore()
+      // .collection('tokens')
+      // .doc(user.uid).
+      // set({token:notifyToken});
+      dispatch(loginUser({mobileNumber,userId:user.uid}))
+      // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
+      // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
+      // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
+      // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
+    }
+  }
+  useEffect(() => {
+    const subscriber = Auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

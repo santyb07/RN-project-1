@@ -107,7 +107,7 @@ const BusinessDetails = () => {
         {
           data.map((val,index)=>(
             <View key={index}>
-            <TouchableOpacity className='px-6 py-4 flex-row justify-start items-center gap-x-5 border-b-3'>
+            <TouchableOpacity className='px-6 py-4 flex-row justify-start items-center gap-x-5 border-b-3' onPress={()=>navigation.navigate('TestNotification')}>
             <Text className='bg-[#D2E0F7] p-2 rounded-2xl'>
               {
                 val.iconName=="wallet" || val.iconName==="exclamation-circle"?

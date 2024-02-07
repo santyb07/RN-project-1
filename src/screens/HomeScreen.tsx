@@ -47,8 +47,8 @@ const HomeScreen = (props: HomeScreenProps) => {
             help={true}
             search={false}
           />
-          <ScrollView>
-            <View className="justify-around px-4 items-start bg-white pb-5">
+          <ScrollView className='space-y-4'>
+            <View className="justify-around px-4 items-start bg-white">
               <ThemeHeading heading={'Account Overview'} />
 
               <View className=" flex-row items-center justify-between w-full ">
@@ -64,7 +64,7 @@ const HomeScreen = (props: HomeScreenProps) => {
                 />
               </View>
             </View>
-            <View className="justify-around px-4 mt-2 bg-white items-start pt-3 pb-5">
+            <View className="justify-around px-4 bg-white items-start">
               <ThemeHeading heading={'Leads Summary'} />
               <View className=" flex-row items-center justify-between w-full">
                 <LeadsSummary
@@ -87,7 +87,7 @@ const HomeScreen = (props: HomeScreenProps) => {
                 />
               </View>
             </View>
-            <View className="justify-around px-4 mt-2 bg-white items-start pt-3">
+            <View className="justify-around px-4 bg-white items-start">
               <ThemeHeading heading={'Integrations'} />
               <View className=" flex-row items-center justify-between w-full">
                 <TouchableOpacity className="w-full bg-blue-500 flex-row justify-center items-center py-3 rounded-xl">
@@ -111,7 +111,7 @@ const HomeScreen = (props: HomeScreenProps) => {
                 </View>
               </TouchableOpacity>
             </View>
-            <View className="justify-around px-4 mt-2 bg-white items-start py-3">
+            <View className="justify-around px-4 bg-white items-start">
               <ThemeHeading heading={'Past Ads'} />
               <View className="w-full flex-1 items-center justify-center">
                 <AdCard />
