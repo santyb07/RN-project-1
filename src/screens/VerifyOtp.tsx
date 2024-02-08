@@ -77,13 +77,14 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
     if (user) {
       console.log(user)
       const notifyToken= getToken();
-
+      
       const documentRef = await  (firestore() as any).collection('tokens').doc(user.uid);
       await documentRef.get()
       .then((docSnapshot:any) => {
         if (docSnapshot.exists) {
-      console.log('Document already exists');
-    } else {
+          console.log('Document already exists');
+        } else {
+      console.log('')
       // Document doesn't exist, save the data
       documentRef.set({token:notifyToken})
         .then(() => {

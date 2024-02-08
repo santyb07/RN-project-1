@@ -41,7 +41,7 @@ export type RootStackParamList={
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const appNavigation = () => {
-  const isUserLoggedIn = useSelector((state:RootState)=>state.auth.userLoggedIn)
+  const isUserLoggedIn = useSelector((state:RootState)=>state.auth.userId)
 
   
   useEffect(()=>{

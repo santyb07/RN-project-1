@@ -86,13 +86,11 @@ const ChooseFrame = ({navigation}:ChooseFrameProps) => {
         </View>
         </View>
         </ScrollView>
-        <View className=' absolute bottom-0 px-4 left-0 right-0 w-full py-2 '>
-        <TouchableOpacity onPress={handleFrameSelection} className='flex-row justify-center items-center bg-orange-400 space-x-3 py-3 rounded-xl px-4 border-black'>
+        <TouchableOpacity onPress={handleFrameSelection} className='absolute bottom-0 left-0 right-0 mx-2 my-2 flex-row justify-center items-center bg-orange-400 space-x-3 py-3 rounded-xl px-4 border-black'>
           {/* <MaterialIcons name='image-frame' size={24} color={'black'}/> */}
           <Text className={'font-[Montserrat-Medium] text-lg text-white'}>Select Frames</Text>
           {/* <FeatherIcons name='arrow-right' size={24} color={'black'}/> */}
       </TouchableOpacity>
-        </View>
         </View>
   );
 };

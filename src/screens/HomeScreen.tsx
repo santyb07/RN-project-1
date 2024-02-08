@@ -27,15 +27,79 @@ import Animated, {
   FadeOutLeft,
 } from 'react-native-reanimated';
 import {RootState} from '../redux/store/store';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import firestore from "@react-native-firebase/firestore"
 import CheckInternet from './CheckInternet';
+import { addBusinessDetails } from '../redux/features/businessDetailsSlice';
+// import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 
 interface HomeScreenProps {
   // navigation: StackNavigationProp<RootStackParamList,"Home">,
 }
 
 const HomeScreen = (props: HomeScreenProps) => {
+  const userData = useSelector((state:RootState)=>state.auth)
+  const dispatch = useDispatch();
 
+  // console.warn(auth().currentUser?.uid)
+
+  useEffect(()=>{
+
+    const getBusinessData=async ()=>{
+        // const user = await firestore().collection('Users').doc(userData.userId).get();
+        // if(user){
+        //   console.warn("user Exist")
+        // }else{
+        //   console.warn('user doesnot exist')
+        // }
+      
+      const documentRef = await  (firestore() as any).collection('users').doc(userData.userId);
+      await documentRef.get()
+      .then((docSnapshot:any) => {
+        if (docSnapshot.exists) {
+          const data = docSnapshot._data;
+      console.log('Document already exists',data);
+      dispatch(addBusinessDetails({
+        businessName:data.businessName,
+        email:data.email,
+        location:data.location,
+        logo:data.logo,
+        mobileNumber1:data.mobileNumber1,
+        mobileNumber2:data.mobileNumber2,
+        website:data.website,
+        designation:data.designation,
+        logoMetadata:data.logoMetadata,
+      }))
+    } else {
+      // Document doesn't exist, save the data
+      documentRef.set({
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        mobileNumber1:userData.mobileNumber
+      })
+        .then(() => {
+          console.log('Document saved successfully');
+          dispatch(addBusinessDetails({
+            businessName:"",
+            email:"",
+            location:"",
+            logo:"https://res.cloudinary.com/drxhgcqvw/image/upload/v1705428150/ysxh4cpuke6va2sqhou8.png",
+            mobileNumber1:userData.mobileNumber,
+            mobileNumber2:"",
+            website:"",
+            designation:""
+          }))
+        })
+        .catch((error:any )=> {
+          console.log('Error saving document:', error);
+        });
+    }
+  }) .catch((error:any) => {
+    console.log('Error checking document:', error);
+  });
+}
+      getBusinessData();
+  },[])
+  
   return (
     <SafeAreaView className="flex-1 bg-white">
       

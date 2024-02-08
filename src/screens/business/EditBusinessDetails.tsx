@@ -19,12 +19,12 @@ import { showMessage } from 'react-native-flash-message'
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/appNavigation';
 import { useDispatch } from 'react-redux'
-import { addBusinessDetails } from '../../redux/features/businessDetailsSlice';
-import { CameraRoll } from '@react-native-camera-roll/camera-roll';
+import { addBusinessDetails, updateLogo } from '../../redux/features/businessDetailsSlice';
+import storage from '@react-native-firebase/storage';
 
 type businessDetailsProps={
   image:string,
-  businessName:string,
+  businessName:string, 
   mobileNumber:{
     mobileNumber1:string,
     mobileNumber2:string,
@@ -51,14 +51,15 @@ interface EditBusinessDetailsProps{
 const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
   const userData = useSelector((state:RootState)=>state.auth)
   const businessData = useSelector((state:RootState)=>state.businessDetails)
-  const [img, setImg] = useState<string>("");
+  const [img, setImg] = useState<string | undefined>(businessData.logo);
+  const [uploadedImg, setUploadedImg] = useState<string>("");
+  // const [logoMetadata,setLogoMetadat] = useState(businessData.logoMetadata? businessData.logoMetadata:"");
   const [loading,setLoading] = useState<boolean>(false);
+  const [select,setSelect] =useState(false);
   const dispatch = useDispatch();
 
-  // console.warn(businessData)
+  // console.log(businessData)
 
-
-  // console.warn(Auth().currentUser?.uid)
   const pickImage =()=>{
     ImagePicker.openPicker({
       // width: null,
@@ -66,37 +67,99 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
       cropping: true,
       compressImageQuality:0.3
     }).then(image => {
-      // console.log(image.path);
+      console.log(image);
       setImg(image.path)
-    }).catch(()=>{
-      setImg("")
+      setSelect(true);
+    }).catch((err:any)=>{
+      console.log('error in uploading the image',err)
     });
   }
+
+  const uploadImage =async()=>{
+    try{
+      setLoading(true)
+      if(businessData.logoMetadata){
+        try{
+          const response = storage().ref(businessData.logoMetadata).delete();
+          console.log('previous image deleted successfully.',response);
+        }catch(err){
+          console.log("error in deleting image",err)
+        }
+      }
+      const response = storage().ref(`/logo/webbrand-${userData.userId}.jpg`)
+      if(img!= undefined){
+        const put = await response.putFile(img);
+        const url = await response.getDownloadURL();
+        console.log("metadata : ",put.metadata.fullPath)
+        console.log("image uploaded successfully",url);
+        dispatch(updateLogo({logo:url,logoMetadata:put.metadata.fullPath}))
+        setImg(url);
+        setLoading(false)
+        setSelect(false)
+      }else{
+        console.log('image not available')
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+  // const deleteImage =async()=>{
+  //   try{
+  //     setLoading(true)
+  //     const response = storage().ref(logoMetadata).delete();
+  //     console.log('image deleted successfully.',response);
+  //     setLoading(false)
+  //   }catch(err){
+  //     console.log(err)
+  //   }
+  // }
   
   const handleSubmit =async(values: any) => {
     try{
-      setLoading(true);
+      // setLoading(true);
+      // if(businessData.logoMetadata){
+      //   await deleteImage()
+      // }
+        setLoading(true);
+        //updating the details
+        const details={
+          businessName:values.businessName,
+          email:values.email,
+          location:values.location,
+          mobileNumber1:values.mobileNumber1,
+          mobileNumber2:values.mobileNumber2,
+          website:values.website,
+          designation:values.designation,
+        }
+        dispatch(addBusinessDetails(details))
+        const res = await firestore()
+      .collection('users')
+      .doc(userData.userId)
+      .update(details);
+      
+      // await uploadImage();
       // await CameraRoll.saveToCameraRoll(img)
-      const details={
-        businessName:values.businessName,
-        email:values.email,
-        location:values.location,
-        logo: img ? img : "https://res.cloudinary.com/drxhgcqvw/image/upload/v1705428150/ysxh4cpuke6va2sqhou8.png",
-        mobileNumber1:values.mobileNumber1,
-        mobileNumber2:values.mobileNumber2,
-        website:values.website,
-        designation:values.designation
-      }
-      // console.warn(details)
+      // const details={
+      //   businessName:values.businessName,
+      //   email:values.email,
+      //   location:values.location,
+      //   logo: img,
+      //   logoMetadata:logoMetadata,
+      //   mobileNumber1:values.mobileNumber1,
+      //   mobileNumber2:values.mobileNumber2,
+      //   website:values.website,
+      //   designation:values.designation
+      // }
+      // console.log(details)
       //store in localstorage
-      dispatch(addBusinessDetails(details))
+      // dispatch(addBusinessDetails(details))
 
       // Perform your submit logic here, e.g., API call or state update
-      const response = await firestore()
-      .collection('users')
-      .doc(userData.userId).
-      set(details);
-      // console.warn(response);
+      // const response = await firestore()
+      // .collection('users')
+      // .doc(userData.userId)
+      // .update(details);
+      // console.log(response);
       showMessage({
         message: "Details updated Successfully",
         // description: "This is our second message",
@@ -104,7 +167,7 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
         titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
         // backgroundColor:"#000000"
       });
-      // console.warn('Form submitted successfully:', values);
+      // console.log('Form submitted successfully:', values);
       setLoading(false);
       navigation.goBack();
     }catch(err){
@@ -115,7 +178,7 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
         titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
         // backgroundColor:"#000000"
       });
-      // console.warn('something went wrong while updating the details',err)
+      // console.log('something went wrong while updating the details',err)
     }
   };
 
@@ -123,12 +186,26 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
     <View className='flex-1'>
       <ScrollView>
       <View className='mx-4 my-4 border-2 rounded-xl border-orange-400 relative'>
-      <Image source={{uri:img ? img:'https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png'}} height={118} resizeMode='contain'/>
+      <Image source={{uri:img? img: "https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103594_1280.png"}} height={118} resizeMode='contain'/>
       <TouchableOpacity onPress={pickImage} className='absolute bottom-2 right-2'>
       <FontAwesomeIcon name="edit" color={"#4287f5"} size={25}/>
       </TouchableOpacity>
       </View>
-      <ScrollView>
+      {
+        select &&
+        <View className='justify-center items-center mb-4'>
+        {
+          loading? 
+          (<TouchableOpacity className=' justify-center items-center border-none bg-orange-400 py-2 px-8 rounded-full'>
+          <Text className='text-xl font-[Montserrat-Medium] text-white'>Loading...</Text>
+        </TouchableOpacity>)
+          :
+          (<TouchableOpacity className=' justify-center items-center border-none bg-orange-400 py-2 px-6 rounded-full' onPress={uploadImage}>
+          <Text className='text-xl font-[Montserrat-Medium] text-white'>Save Image</Text>
+        </TouchableOpacity>)
+        }
+      </View>
+      }
       <Formik
       initialValues={{
         businessName: businessData.businessName,
@@ -452,7 +529,7 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
           loading ? 
           <View className='w-full justify-center items-center py-1'>
           <Button
-          title="Login"
+          title="Save"
           loading={true}
           disabled={true}
           loadingProps={{
@@ -485,8 +562,8 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
            width:'100%',
            borderColor: 'transparent',
            borderWidth: 0,
-           borderRadius: 5,
-           paddingVertical: 14,
+           borderRadius: 30,
+           paddingVertical: 10,
          }}
          containerStyle={{
            width: '100%',
@@ -498,7 +575,6 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
           </View>
       )}
     </Formik>
-    </ScrollView>
     </ScrollView>
     </View>
   )

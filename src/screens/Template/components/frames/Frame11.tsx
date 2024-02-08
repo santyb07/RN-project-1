@@ -11,7 +11,7 @@ const Frame11 = () => {
          <View className='w-full absolute bottom-0 '>
          <View className='bg-white px-8 py-1 relative'>
          <View className='absolute right-2 bottom-2 border-4 border-orange-400 rounded-xl'>
-         <Image source={{uri:"https://webgraphagency.com/wp-content/uploads/2023/04/testimonial2.jpg"}} style={{minHeight:110,minWidth:100}} resizeMode='cover'/>
+         <Image source={{uri:businessData.logo? businessData.logo:"https://webgraphagency.com/wp-content/uploads/2023/04/testimonial2.jpg"}} style={{minHeight:110,minWidth:100}} resizeMode='cover'/>
          </View>
          
          <View className='w-full pl-4'>

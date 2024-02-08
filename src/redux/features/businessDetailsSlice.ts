@@ -6,24 +6,27 @@ export interface businessDetailsProps{
         businessName:string | null,
         email:string | null,
         location:string | null,
-        logo:string | null,
+        logo:string | undefined,
         mobileNumber1:string | null,
         mobileNumber2:string | null,
         website:string | null,
         selectedFrame:string | null,
         designation : string | null,
+        logoMetadata:string | undefined
 }
 
 const initialState: businessDetailsProps= {
     businessName:null,
     email:null,
     location:null,
-    logo:null,
+    logo:"",
     mobileNumber1:null,
     mobileNumber2:null,
     website:null,
     selectedFrame:'frame1',
     designation :null,
+    logoMetadata:undefined
+
 }
 
 export const businessDetailsSlice = createSlice({
@@ -33,12 +36,15 @@ export const businessDetailsSlice = createSlice({
     addBusinessDetails:(state,action)=>{
         state.businessName =action.payload.businessName;
         state.email =action.payload.email;
-        state.logo=action.payload.logo;
         state.mobileNumber1 =action.payload.mobileNumber1;
         state.mobileNumber2 =action.payload.mobileNumber2;
         state.website =action.payload.website;
         state.location =action.payload.location;
         state.designation= action.payload.designation ? action.payload.designation :null
+        if(action.payload.logoMetadata){
+          state.logoMetadata= action.payload.logoMetadata
+          state.logo= action.payload.logo
+        }
     },
     clearBusinessDetails:(state)=>{
         state.businessName =null;
@@ -47,7 +53,14 @@ export const businessDetailsSlice = createSlice({
         state.mobileNumber2 =null;
         state.website =null;
         state.location =null;
+        state.logoMetadata = undefined;
+        state.logo= undefined
         // console.warn('user loggedin');
+    },
+    updateLogo:(state,action)=>{
+      state.logo = action.payload.logo;
+      state.logoMetadata = action.payload.logoMetadata;
+      // console.warn('user loggedin');
     },
     selectFrame:(state,action)=>{
       if(action.payload){
@@ -69,6 +82,6 @@ export const businessDetailsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {addBusinessDetails, clearBusinessDetails, selectFrame} = businessDetailsSlice.actions
+export const {addBusinessDetails, clearBusinessDetails, selectFrame,updateLogo} = businessDetailsSlice.actions
 
 export default businessDetailsSlice.reducer

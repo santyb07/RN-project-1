@@ -71,9 +71,10 @@ const BusinessDetails = () => {
   const logoutDispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
   const businessData = useSelector((state:RootState)=>state.businessDetails)
+  const userData = useSelector((state:RootState)=>state.auth)
 
 
-
+  console.log(businessData);
   const handleLogout=async()=>{
     // await Auth().signOut();
     await logoutDispatch(clearBusinessDetails());
@@ -82,6 +83,8 @@ const BusinessDetails = () => {
   const navigateToEditDetails=()=>{
     navigation.navigate('EditBusinessDetails');
   }
+  const logo = (businessData.logo ? businessData.logo:'https://www.bootdey.com/img/Content/avatar/avatar1.png')
+  console.log(businessData.logo)
   return (
     //new Business Sectiont
     <View className='flex-1'>
@@ -89,14 +92,14 @@ const BusinessDetails = () => {
       <ScrollView>
       <View className='w-full bg-blue-400 py-4 flex-row justify-start items-center px-6 space-x-4'>
         <Image 
-        source={{uri:'https://www.bootdey.com/img/Content/avatar/avatar1.png'}} 
+        source={{uri:logo}} 
         height={70} width={70} resizeMode='cover'
-        style={{borderRadius:50}}
+        style={{borderRadius:50,borderColor:colors.ActiveColor,borderWidth:3}}
         />
         <View className='pr-12'>
           <Text className='text-xl font-[Montserrat-SemiBold] text-white'>{businessData.businessName ? businessData.businessName:'Your Name'}</Text>
-          <Text className='text-sm font-[Montserrat-Regular] text-white'>{businessData.location ? businessData.location:'Poonam Sagar Complex, Mira road,Thane 401107'}</Text>
-          <Text className='text-sm font-[Montserrat-Regular] text-white'>{businessData.mobileNumber1 ? businessData.mobileNumber1:'+91 999999999'}</Text>
+          <Text className='text-sm font-[Montserrat-Regular] text-white'>{businessData.location ? businessData.location:'Your address'}</Text>
+          <Text className='text-sm font-[Montserrat-Regular] text-white'>{businessData.mobileNumber1 ? businessData.mobileNumber1:'+91 9999999999'}</Text>
           <TouchableOpacity className='pt-2 flex-row space-x-1 justify-start items-center' onPress={navigateToEditDetails}>
             <Text className='text-xs font-[Montserrat-Regular] text-white'>Edit Details</Text>
             <FontAwesomeIcons name='angle-right' size={20} color={'white'}/>
