@@ -31,6 +31,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import firestore from "@react-native-firebase/firestore"
 import CheckInternet from './CheckInternet';
 import { addBusinessDetails } from '../redux/features/businessDetailsSlice';
+import { getToken } from '../utils/firebase/CommonUtils';
 // import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 
 interface HomeScreenProps {
@@ -46,12 +47,7 @@ const HomeScreen = (props: HomeScreenProps) => {
   useEffect(()=>{
 
     const getBusinessData=async ()=>{
-        // const user = await firestore().collection('Users').doc(userData.userId).get();
-        // if(user){
-        //   console.warn("user Exist")
-        // }else{
-        //   console.warn('user doesnot exist')
-        // }
+      const fcmtoken= getToken();
       
       const documentRef = await  (firestore() as any).collection('users').doc(userData.userId);
       await documentRef.get()
@@ -59,6 +55,16 @@ const HomeScreen = (props: HomeScreenProps) => {
         if (docSnapshot.exists) {
           const data = docSnapshot._data;
       console.log('Document already exists',data);
+
+      //store fcmtoken
+      firestore()
+      .collection('tokens')
+      .doc(userData.userId)
+      .update({token:fcmtoken})
+      .then(() => {
+        console.log('Token added');
+      })
+
       dispatch(addBusinessDetails({
         businessName:data.businessName,
         email:data.email,
@@ -77,6 +83,14 @@ const HomeScreen = (props: HomeScreenProps) => {
         mobileNumber1:userData.mobileNumber
       })
         .then(() => {
+          firestore()
+          .collection('tokens')
+          .doc(userData.userId)
+          .set({token:fcmtoken})
+          .then(() => {
+            console.log('Token added');
+          })
+
           console.log('Document saved successfully');
           dispatch(addBusinessDetails({
             businessName:"",
@@ -89,6 +103,7 @@ const HomeScreen = (props: HomeScreenProps) => {
             designation:""
           }))
         })
+        
         .catch((error:any )=> {
           console.log('Error saving document:', error);
         });

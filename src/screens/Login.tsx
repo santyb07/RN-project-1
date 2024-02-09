@@ -10,6 +10,9 @@ import HeaderBar from './components/HeaderBar'
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { showMessage } from 'react-native-flash-message'
 import { Button } from '@rneui/themed'
+import { useDispatch } from 'react-redux'
+import { setConfirmData } from '../redux/features/authSlice'
+import { colors } from '../utils/constants'
 // import { AuthContext } from '../context/AuthContext'
 // import { styled } from 'nativewind'
 // import { SafeAreaView } from 'react-native-safe-area-context'
@@ -27,8 +30,11 @@ interface LoginScreenProps{
 const Login = ({navigation}:LoginScreenProps) => {
   const [number,setChangeNumber]= useState<string>("");
   const [toggleCheckBox, setToggleCheckBox] = useState<boolean>(true)
-  const [confirmData,setConfirmData] = useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
-  const [loading,setLoading] = useState<boolean>(false);
+  // const [confirmData,setConfirmData] = useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
+  const [loading,setLoading] = useState<boolean>(false)
+  const dispatch = useDispatch();
+
+
   let disableLogin= (number.length===10 && toggleCheckBox==true) ? true:false;
   // console.warn(disableLogin);
   const onChanged =(text:string)=>{
@@ -42,7 +48,7 @@ const Login = ({navigation}:LoginScreenProps) => {
       const mobileNumber= "+91" +number
       const confirmation = await auth().signInWithPhoneNumber(mobileNumber)
     console.log(confirmation)
-    setConfirmData(confirmation);
+    // setConfirmData(confirmation);
        showMessage({
         message: "OTP Sent Successfully",
         // description: "This is our second message",
@@ -50,7 +56,8 @@ const Login = ({navigation}:LoginScreenProps) => {
         titleStyle:{fontFamily:'Montserrat-Bold',textAlign:"center",color:'#FFFFFF'},
         // backgroundColor:"#000000"
       });
-      navigation.navigate('VerifyOtp',{mobileNumber:number,confirmData:confirmData});
+      dispatch(setConfirmData(confirmation))
+      navigation.navigate('VerifyOtp',{mobileNumber:number});
       setLoading(false);
     }catch(err){
       setLoading(false)
@@ -84,7 +91,7 @@ const Login = ({navigation}:LoginScreenProps) => {
         <Text className="font-['Montserrat-Medium'] text-lg">+91</Text>
       <TextInput
         // style={styles.input}
-        className='gray-600 border p-2.5 text-lg rounded-md text-black flex-grow focus:border-2 border-gray-300 focus:border-blue-800'
+        className='gray-600 border p-2.5 text-lg rounded-md text-black flex-grow focus:border-2 border-gray-300 focus:border-orange-400'
         placeholder="Enter your Number"
         value={number}
         onChangeText={(val)=>onChanged(val)}
@@ -97,7 +104,7 @@ const Login = ({navigation}:LoginScreenProps) => {
         <View className='flex-row justify-center items-center py-3 gap-2 '>
           <CheckBox
           disabled={false}
-          tintColors={{true:'#4287f5',false:'#607a74'}}
+          tintColors={{true:'#F39424',false:'#607a74'}}
           tintColor="black"
           value={toggleCheckBox}
           
@@ -106,21 +113,6 @@ const Login = ({navigation}:LoginScreenProps) => {
           />
           <Text className="text-[10px] font-['Montserrat-Light']">By continuing, you agree to our Terms & Privacy Policies</Text>
         </View>
-        {/* <PhoneInput 
-         ref={ref=>{
-          phoneRef=ref;
-         }}
-        onPressFlag={()=>null}
-         initialCountry='in'
-         initialValue={number}
-         textProps={{
-             placeholder: 'Enter a phone number...'
-         }}
-         textStyle={{color:'black'}}
-         onChangePhoneNumber={(value)=>onChanged(value)}
-         
-         
-        /> */}
         </View>
         {
           loading ? 
@@ -135,11 +127,11 @@ const Login = ({navigation}:LoginScreenProps) => {
           }}
           titleStyle={{ fontFamily:'Montserrat-SemiBold',fontSize:20 }}
           buttonStyle={{
-            backgroundColor: 'rgb(59,130,246)',
+            backgroundColor:colors.ActiveColor,
             width:'100%',
             borderColor: 'transparent',
             borderWidth: 0,
-            borderRadius: 5,
+            borderRadius: 30,
             // paddingVertical: 10,
           }}
           containerStyle={{
@@ -155,11 +147,11 @@ const Login = ({navigation}:LoginScreenProps) => {
          disabled={!disableLogin}
          titleStyle={{ fontFamily:'Montserrat-SemiBold',fontSize:20 }}
          buttonStyle={{
-           backgroundColor: 'rgb(59,130,246)',
+           backgroundColor: colors.ActiveColor,
            width:'100%',
            borderColor: 'transparent',
            borderWidth: 0,
-           borderRadius: 5,
+           borderRadius: 30,
            paddingVertical: 14,
          }}
          containerStyle={{

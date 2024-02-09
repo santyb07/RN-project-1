@@ -18,7 +18,7 @@ export type RootStackParamList={
   Login:undefined,
   VerifyOtp:{
     mobileNumber:string,
-    confirmData:FirebaseAuthTypes.ConfirmationResult | null
+    // confirmData:FirebaseAuthTypes.ConfirmationResult | null
   },
   // AccountOverview:undefined,
   // Templates:undefined,

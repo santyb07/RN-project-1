@@ -6,18 +6,26 @@ export interface OnboardState {
     userLoggedIn: boolean | null,
     mobileNumber: number | null,
     userId:string | undefined,
+    confirmData:any | undefined
 }
 
 const initialState: OnboardState = {
     userLoggedIn: false,
     mobileNumber: null,
     userId: undefined,
+    confirmData:undefined
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setConfirmData:(state,action)=>{
+      state.confirmData= action.payload
+    },
+    clearConfirmData:(state,action)=>{
+      state.confirmData= undefined
+    },
     loginUser:(state,action)=>{
         state.userLoggedIn = true;
         state.mobileNumber = action.payload.mobileNumber;
@@ -42,6 +50,6 @@ export const authSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {loginUser, logoutUser} = authSlice.actions
+export const {loginUser, logoutUser,setConfirmData, clearConfirmData} = authSlice.actions
 
 export default authSlice.reducer

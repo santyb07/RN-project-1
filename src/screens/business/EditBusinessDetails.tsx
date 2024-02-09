@@ -52,8 +52,8 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
   const userData = useSelector((state:RootState)=>state.auth)
   const businessData = useSelector((state:RootState)=>state.businessDetails)
   const [img, setImg] = useState<string | undefined>(businessData.logo);
-  const [uploadedImg, setUploadedImg] = useState<string>("");
-  // const [logoMetadata,setLogoMetadat] = useState(businessData.logoMetadata? businessData.logoMetadata:"");
+  // const [uploadedImg, setUploadedImg] = useState<string>("");
+  // const [metaData,setMetadat] = useState(businessData.logoMetadata? businessData.logoMetadata:"");
   const [loading,setLoading] = useState<boolean>(false);
   const [select,setSelect] =useState(false);
   const dispatch = useDispatch();
@@ -92,7 +92,15 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
         const url = await response.getDownloadURL();
         console.log("metadata : ",put.metadata.fullPath)
         console.log("image uploaded successfully",url);
-        dispatch(updateLogo({logo:url,logoMetadata:put.metadata.fullPath}))
+
+        //store logo uri in database
+        const logoDetails={logo:url,logoMetadata:put.metadata.fullPath}
+        const res = await firestore()
+        .collection('users')
+        .doc(userData.userId)
+        .update(logoDetails);
+
+        dispatch(updateLogo(logoDetails))
         setImg(url);
         setLoading(false)
         setSelect(false)
@@ -479,7 +487,7 @@ const EditBusinessDetails = ({navigation}:EditBusinessDetailsProps) => {
         onChangeText={handleChange('designation')}
         // errorMessage={(errors.mobileNumber1 && typeof errors.mobileNumber1 === 'string') ? errors.mobileNumber1:''}
         // keyboardType='numeric'
-        maxLength={10}
+        maxLength={30}
         leftIcon={
           <SimpleLineIcons
           name='screen-smartphone'
