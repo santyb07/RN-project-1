@@ -1,19 +1,25 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native'
-import React, { Component } from 'react'
+import { Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native'
+import React, { Component, useEffect } from 'react'
 
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import { FlatList } from 'react-native';
 
+interface ImageObject {
+  url: string;
+  tags?: string[];
+}
 interface TemplateScrollProps{
-    templateData:{
-        templateImg:string,
-        promotion:boolean,
-    }[],
+    templateData:ImageObject[],
     navigateToEditor:(templateImg:string,promotion:boolean)=>void,
-    categoryName:string,
+    categoryName?:string,
 }
 
 const TemplateScroll = ({templateData,navigateToEditor,categoryName}:TemplateScrollProps) => {
+  
+  useEffect(()=>{
+    
+    console.log("template scroll page",templateData)
+  },[])
   return (
     <View className="w-full mb-4">
     <View className='flex-row justify-between px-3 py-3'>
@@ -28,14 +34,15 @@ const TemplateScroll = ({templateData,navigateToEditor,categoryName}:TemplateScr
     <FlatList
     style={{
       display:'flex',
-      flexDirection:'row'
+      // flexDirection:'row',
     }}
     horizontal
     data={templateData}
     renderItem={item=>{
       return(
-        <TouchableOpacity onPress={()=>navigateToEditor(item.item.templateImg,item.item.promotion)}>
-        <Image source={{uri:item.item.templateImg}} height={140} width={140} resizeMode='contain'/> 
+        <TouchableOpacity onPress={()=>navigateToEditor(item.item.url,false)}>
+        <Image source={{uri:item.item.url}} height={140} width={140} resizeMode='contain'/> 
+        {/* <Image source={{uri:"https://res.cloudinary.com/drxhgcqvw/image/upload/v1707634984/WhatsApp_Image_2024-02-10_at_6.36.51_PM_2_pamsxo.jpg"}} height={140} width={140} resizeMode='contain'/>  */}
         </TouchableOpacity>
       )
     }

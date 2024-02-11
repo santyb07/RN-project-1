@@ -115,6 +115,7 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
       {/* Image container with logos and text */}
       <View
         className={`relative w-full h-[60vh]`}
+        // className={`relative w-full h-3/5`}
         ref={viewShotRef}
         collapsable={false}>
         {/* Logos on left and right */}
@@ -143,7 +144,7 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
               position: 'absolute',
               top: 12,
               left: 12,
-              right: 2,
+              right: 12,
               zIndex: 10,
               flex: 1,
               flexDirection: 'row',
@@ -169,8 +170,13 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
         <Image
           source={{uri: templateImg}}
           className="flex-1"
-          resizeMode="contain"
+          resizeMode="cover"
         />
+         {/* <Image
+          source={{uri: "https://res.cloudinary.com/drxhgcqvw/image/upload/v1707575650/WhatsApp_Image_2024-02-10_at_6.36.51_PM_1_mjoufm.jpg"}}
+          className="flex-1"
+          resizeMode="contain"
+        /> */}
 
         {/* Text details above the image */}
         {businessData.selectedFrame === 'frame1' && <Frame1 />}
