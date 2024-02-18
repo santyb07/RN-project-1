@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Image,
@@ -51,18 +51,61 @@ interface EditTemplatesParams {
 const TemplateEditor = ({navigation}: TemplateEditorProps) => {
   const route = useRoute();
   const {templateImg, promotion} = route.params as EditTemplatesParams;
-  const [logoSize, setLogoSize] = useState({height: 50, width: 70});
+  const [logoSize, setLogoSize] = useState({height: 20, width: 40});
   const [logoPosition, setLogoPosition] = useState('left');
   const viewShotRef = useRef(null);
   const [logoVisible, setLogoVisible] = useState<boolean | null>(true);
   const businessData = useSelector((state: RootState) => state.businessDetails);
+  const [aspectRatio,setAspectRatio] = useState<number>()
   // console.warn(businessData.selectedFrame)
 
   // console.warn(route.params)
   const adjustLogoSize = (height: number) => {
-    let newHeight = height + 5;
-    let newWidth = newHeight + 20;
-    setLogoSize({height: newHeight, width: newWidth});
+    // let newHeight = height + 5;
+    // let newWidth = newHeight + 20;
+    // setLogoSize({height: newHeight, width: newWidth});
+    setLogoSize(val=>({...val,width:val.width+5}))
+  };
+  // const increaseLogoSize = () => {
+  //   // let newHeight = height + 5;
+  //   // let newWidth = newHeight + 20;
+  //   // setLogoSize({height: newHeight, width: newWidth});
+  //   if(logoSize.width<250){
+  //     setLogoSize(val=>({...val,width:val.width+2}))
+  //   }
+  // };
+  const increaseLogoSize = () => {
+    if (logoSize.width < 80) {
+      // Increase width while maintaining aspect ratio
+      const newWidth = logoSize.width + 2;
+      const newHeight = (newWidth / 7) * 5;
+      setLogoSize({ width: newWidth, height: newHeight });
+    }
+  };
+  useEffect(()=>{
+    if(businessData.logo){
+      Image.getSize(businessData.logo, (width, height) => {
+        console.log('height:',height,'width:',width)
+        const ratio= width/height;
+        setAspectRatio(ratio);
+      });
+    }
+  },[])
+  // const decreaseLogoSize = () => {
+  //   // let newHeight = height + 5;
+  //   // let newWidth = newHeight + 20;
+  //   // setLogoSize({height: newHeight, width: newWidth});
+  //   if(logoSize.width>20){
+  //     setLogoSize(val=>({...val,width:val.width-2}))
+  //   }
+  // };
+  const decreaseLogoSize = () => {
+    if (logoSize.width > 20) {
+      // Decrease width while maintaining aspect ratio
+      const newWidth = logoSize.width - 2;
+      const newHeight = (newWidth / 7) * 5;
+      setLogoSize({ width: newWidth, height: newHeight });
+    }
   };
   const adjustLogoPosition = (pos: string) => {
     setLogoPosition(pos);
@@ -110,6 +153,7 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
   };
 
   return (
+    <SafeAreaView className='flex-1'>
     <View className="flex-1 justify-start items-center bg-white">
       <TemplateHeaderBar saveImage={saveImage} />
       {/* Image container with logos and text */}
@@ -142,12 +186,15 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
           <View
             style={{
               position: 'absolute',
+              // position:'relative',
               top: 12,
               left: 12,
               right: 12,
               zIndex: 10,
               flex: 1,
               flexDirection: 'row',
+              // alignItems:'flex-start',
+              // alignItems:'flex-end',
               justifyContent: `${
                 logoPosition == 'center'
                   ? 'center'
@@ -159,11 +206,18 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
             {businessData.logo && logoVisible && (
               <Image
                 source={{uri: businessData.logo}}
-                style={{minHeight: logoSize.height, minWidth: logoSize.width}}
+                style={{minHeight: logoSize.height, minWidth:logoSize.width,aspectRatio:aspectRatio}}
+                // style={{
+                //   width: logoSize.width, // Adjusted width
+                //   height: 'auto', // Auto height based on aspect ratio
+                //   aspectRatio: 1, // Square aspect ratio
+                //   resizeMode: 'contain', // Experiment with different resize modes
+                // }}
                 resizeMode="contain"
               />
             )}
           </View>
+         
         )}
 
         {/* Main image taking full width and 50% of the screen height */}
@@ -192,7 +246,7 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
         {businessData.selectedFrame === 'frame11' && <Frame11 />}
         {!businessData.selectedFrame && <Frame1 />}
       </View>
-      <View className="flex-col mt-10 px-3 py-3">
+      <View className="flex-col px-3 py-3 mt-2">
         <View className="flex-row justify-between space-x-4 items-center">
           <Text className="text-lg font-[Montserrat-Bold]">Logo</Text>
           {logoVisible ? (
@@ -216,7 +270,7 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
         <View className=" flex-row space-x-4 justify-center item-center">
           <View className="flex-row justify-around items-center space-x-3 border rounded-xl  py-1 px-3 mt-3">
             {/* <IonicAwesomeIcons name='resize-outline' size={30} style={{alignItems:'center',justifyContent:'center',borderColor:'#494848'}}/> */}
-            <Slider
+            {/* <Slider
               style={{width: 80}}
               disabled={!logoVisible}
               minimumValue={10}
@@ -230,10 +284,18 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
                 backgroundColor: `${colors.ActiveColor}`,
               }}
               onValueChange={(value: number) => adjustLogoSize(value)}
-            />
+            /> */}
+            <TouchableOpacity>
+            <FontAwesomeIcons name='minus-square' size={30} color={colors.ActiveColor} onPress={decreaseLogoSize}/>
+            </TouchableOpacity>
+            <View>
             <Text className='text-xl font-["Montserrat-Semibold"]'>
-              {logoSize.height}
+              {logoSize.width}
             </Text>
+            </View>
+            <TouchableOpacity>
+            <FontAwesomeIcons name='plus-square' size={30} color={colors.ActiveColor} onPress={increaseLogoSize}/>
+            </TouchableOpacity>
           </View>
 
           {!promotion && businessData.logo && logoVisible ? (
@@ -329,6 +391,7 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
         </TouchableOpacity>
       </View>
     </View>
+    </SafeAreaView>
   );
 };
 

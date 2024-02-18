@@ -65,6 +65,7 @@ interface CategoryObject {
   created_at: { nanoseconds: number, seconds: number };
   images: ImageObject[];
   name: string;
+  tags:string[];
 }
 const Templates = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
@@ -75,9 +76,10 @@ const Templates = () => {
     const created_at = doc.created_at; // Assuming created_at is stored as is in Firestore
     const images = doc.images.map((image: any) => ({ url: image.url })); // Convert images array
     const name = doc.name;
+    const tags= doc.tags;
     
 
-    return { created_at, images, name };
+    return { created_at, images, name ,tags};
 }
 
   useEffect(()=>{
@@ -85,14 +87,14 @@ const Templates = () => {
       const collectionRef = firestore().collection('imageCategories');
 
       try {
-        const querySnapshot = await collectionRef.get();
+        const querySnapshot = await collectionRef.orderBy('created_at', 'desc').get()
         const fetchedCategories: CategoryObject[] = [];
 
         querySnapshot.forEach((doc) => {
           const categoryObject = convertToCategoryObject(doc.data());
           fetchedCategories.push(categoryObject);
         });
-
+        console.log('categories of images:',fetchedCategories)
         setCategories(fetchedCategories);
         setLoading(false);
       } catch (error) {

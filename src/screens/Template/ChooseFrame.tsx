@@ -47,18 +47,21 @@ const ChooseFrame = ({navigation}:ChooseFrameProps) => {
     }
     
   return (
-        <View className='flex-1 pb-10 relative'>
+    <SafeAreaView className='flex-1'>
+        <View className='flex-1 pb-16 relative'>
         <ScrollView className=''>
-        <View className='flex-col '>
-            <Text className='text-lg font-[Montserrat-Medium] px-6 underline unde'>Business</Text>
-        <View className='flex-row justify-start items-center gap-x-6 gap-y-6 flex-wrap  px-6 py-6'>
+        <View className='flex-col gap-y-2 '>
+            <View>
+            <Text className='text-lg font-[Montserrat-Medium] px-6 underline'>Business</Text>
+            </View>
+        <View className='flex-row justify-around items-center space-y-3 flex-wrap  '>
             {
                 FrameData.map((val,index)=>(
                     // <View key={index}>
-                    <TouchableOpacity className={(selectedFrame===val) ? "border-4 border-orange-500 rounded-xl":"border-4 border-gray-500 rounded-xl" } key={index} onPress={()=>setSelectedFrame(val)}>
+                    <TouchableOpacity className={(selectedFrame===val) ? "border-2 border-orange-500 rounded-xl":"border-2 border-gray-400 rounded-xl" } key={index} onPress={()=>setSelectedFrame(val)}>
                     <Image source={{uri:'https://res.cloudinary.com/drxhgcqvw/image/upload/v1706686607/IMG-20240131-WA0003_dmda7w.jpg'}} 
                     height={180} 
-                    width={150} 
+                    width={140} 
                     resizeMode='contain'
                     /> 
                     </TouchableOpacity>
@@ -69,14 +72,14 @@ const ChooseFrame = ({navigation}:ChooseFrameProps) => {
         </View>
         <View className='flex-col '>
             <Text className='text-lg font-[Montserrat-Medium] px-6 underline'>Political</Text>
-        <View className='flex-row justify-start items-center gap-x-6 gap-y-6 flex-wrap  px-6 py-6'>
+            <View className='flex-row justify-around items-center space-y-3 flex-wrap  '>            
             {
                 FrameData.map((val,index)=>(
                     // <View key={index}>
-                    <TouchableOpacity className={(selectedFrame===val) ? "border-4 border-orange-500 rounded-xl":"border-4 border-gray-500 rounded-xl" } key={index} onPress={()=>setSelectedFrame(val)}>
+                    <TouchableOpacity className={(selectedFrame===val) ? "border-2 border-orange-500 rounded-xl":"border-2 border-gray-500 rounded-xl" } key={index} onPress={()=>setSelectedFrame(val)}>
                     <Image source={{uri:'https://res.cloudinary.com/drxhgcqvw/image/upload/v1706686607/IMG-20240131-WA0003_dmda7w.jpg'}} 
                     height={180} 
-                    width={150} 
+                    width={140} 
                     resizeMode='contain'
                     /> 
                     </TouchableOpacity>
@@ -92,6 +95,7 @@ const ChooseFrame = ({navigation}:ChooseFrameProps) => {
           {/* <FeatherIcons name='arrow-right' size={24} color={'black'}/> */}
       </TouchableOpacity>
         </View>
+        </SafeAreaView>
   );
 };
 export default ChooseFrame;
