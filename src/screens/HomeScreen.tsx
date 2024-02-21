@@ -75,6 +75,7 @@ const HomeScreen = (props: HomeScreenProps) => {
         website:data.website,
         designation:data.designation,
         logoMetadata:data.logoMetadata,
+        accountType:data.accountType,
       }))
     } else {
       // Document doesn't exist, save the data

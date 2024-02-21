@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntIcons from 'react-native-vector-icons/AntDesign';
@@ -24,7 +25,7 @@ import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 import {showMessage} from 'react-native-flash-message';
 import Share from 'react-native-share';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/store/store';
 import Frame1 from './components/frames/Frame1';
 import Frame2 from './components/frames/Frame2';
@@ -39,6 +40,9 @@ import TemplateHeaderBar from './components/TempHeaderBar';
 import Frame9 from './components/frames/Frame9';
 import Frame10 from './components/frames/Frame10';
 import Frame11 from './components/frames/Frame11';
+import Selectframe from './SelectFrame';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import { selectFrame } from '../../redux/features/businessDetailsSlice';
 
 interface TemplateEditorProps {
   navigation: StackNavigationProp<RootStackParamList, 'TemplateEditor'>;
@@ -47,7 +51,19 @@ interface EditTemplatesParams {
   templateImg: string;
   promotion: boolean;
 }
-
+const FrameData=[
+  'frame1',
+  'frame2',
+  'frame3',
+  'frame4',
+  'frame5',
+  'frame6',
+  'frame7',
+  'frame8',
+  'frame9',
+  'frame10',
+  'frame11',
+]
 const TemplateEditor = ({navigation}: TemplateEditorProps) => {
   const route = useRoute();
   const {templateImg, promotion} = route.params as EditTemplatesParams;
@@ -57,6 +73,11 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
   const [logoVisible, setLogoVisible] = useState<boolean | null>(true);
   const businessData = useSelector((state: RootState) => state.businessDetails);
   const [aspectRatio,setAspectRatio] = useState<number>()
+  const [openSelectFrame,setOpenSelectFrame]= useState(true);
+  const translateY = useSharedValue(150);
+  const [selectedFrame,setSelectedFrame] = useState(businessData.selectedFrame);
+  const dispatch = useDispatch();
+
   // console.warn(businessData.selectedFrame)
 
   // console.warn(route.params)
@@ -66,6 +87,19 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
     // setLogoSize({height: newHeight, width: newWidth});
     setLogoSize(val=>({...val,width:val.width+5}))
   };
+  const handleFrameSelection=()=>{
+    if(openSelectFrame){
+      translateY.value =withTiming(-180,{duration:300});
+    }else{
+      translateY.value =withTiming(180,{duration:300});
+      console.log('frame selected')
+    }
+    setOpenSelectFrame((val)=>!val)
+}
+const ChangeFrame=()=>{
+  dispatch(selectFrame(selectedFrame))
+
+}
   // const increaseLogoSize = () => {
   //   // let newHeight = height + 5;
   //   // let newWidth = newHeight + 20;
@@ -91,6 +125,12 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
       });
     }
   },[])
+  const handlePress = () => {
+    translateY.value -= 100;
+};
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value}],
+  }));
   // const decreaseLogoSize = () => {
   //   // let newHeight = height + 5;
   //   // let newWidth = newHeight + 20;
@@ -379,15 +419,51 @@ const TemplateEditor = ({navigation}: TemplateEditorProps) => {
           )}
         </View>
       </View>
-      <View className=" absolute bottom-0 px-4 left-0 right-0 w-full py-2">
+        <Animated.View style={[styles.box,animatedStyles]}>
+        <ScrollView className='' horizontal>
+        <View className='flex-col px-4'>
+            {/* <View>
+            <Text className='text-lg font-[Montserrat-Medium] px-6 underline'>Business</Text>
+            </View> */}
+        <View className='flex-row justify-around items-center space-x-3 px-4 py-4'>
+            {
+                FrameData.map((val,index)=>(
+                    // <View key={index}>
+                    <TouchableOpacity className={(businessData.selectedFrame===val) ? "border-4 border-white bg-orange-400 rounded-xl":"border-2 bg-white rounded-xl" } key={index} 
+                    onPress={()=>  dispatch(selectFrame(val))}>
+                    <Image source={{uri:'https://res.cloudinary.com/drxhgcqvw/image/upload/v1706686607/IMG-20240131-WA0003_dmda7w.jpg'}} 
+                    height={140} 
+                    width={100} 
+                    resizeMode='contain'
+                    /> 
+                    </TouchableOpacity>
+                    // </View>
+                    ))
+                }
+        </View>
+        </View>
+        </ScrollView>
+        <View className=' px-4 py-2 bg-black-300'>
+        <TouchableOpacity className='flex-row space-x-2 justify-center items-center px-4 py-3 border bg-white rounded-xl'
+         onPress={handleFrameSelection}
+        >
+          <MaterialIcons name='image-frame' size={24} color={'black'}/>
+          <Text className={'font-[Montserrat-Medium] text-lg text-center text-black'}>Select Frame</Text>
+          {/* <FeatherIcons name='arrow-right' size={24} color={'black'}/> */}
+      </TouchableOpacity>
+        </View>
+        </Animated.View>
+      <View className=" absolute bottom-0 px-4 left-0 right-0 w-full py-2 z-50">
         <TouchableOpacity
-          onPress={() => navigation.navigate('ChooseFrame')}
+          // onPress={() => navigation.navigate('ChooseFrame')}
+          // onPress={()=>setOpenSelectFrame((val)=>!val)}
+          onPress={handleFrameSelection}
           className="flex-row justify-center items-center space-x-3 py-3 border rounded-xl px-4 border-black">
           <MaterialIcons name="image-frame" size={24} color={'black'} />
           <Text className={'font-[Montserrat-Medium] text-lg text-black'}>
             Select Frames
           </Text>
-          <FeatherIcons name="arrow-right" size={24} color={'black'} />
+          {/* <FeatherIcons name="arrow-right" size={24} color={'black'} /> */}
         </TouchableOpacity>
       </View>
     </View>
@@ -401,6 +477,17 @@ const styles = StyleSheet.create({
     width: null,
     height: null,
     resizeMode: 'contain',
+  },
+  box: {
+    height: 250,
+    width: '100%',
+    // backgroundColor: 'orange',
+    backgroundColor:'#191919',
+    // borderRadius: 20,
+    borderTopStartRadius:20,
+    borderTopRightRadius:20,
+    marginVertical: 50,
+    zIndex:100,
   },
 });
 

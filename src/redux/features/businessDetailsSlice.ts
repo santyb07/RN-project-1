@@ -12,7 +12,8 @@ export interface businessDetailsProps{
         website:string | null,
         selectedFrame:string | null,
         designation : string | null,
-        logoMetadata:string | undefined
+        logoMetadata:string | undefined,
+        accountType:string | null,
 }
 
 const initialState: businessDetailsProps= {
@@ -25,7 +26,8 @@ const initialState: businessDetailsProps= {
     website:null,
     selectedFrame:'frame1',
     designation :null,
-    logoMetadata:undefined
+    logoMetadata:undefined,
+    accountType:null,
 
 }
 
@@ -40,7 +42,8 @@ export const businessDetailsSlice = createSlice({
         state.mobileNumber2 =action.payload.mobileNumber2;
         state.website =action.payload.website;
         state.location =action.payload.location;
-        state.designation= action.payload.designation ? action.payload.designation :null
+        state.designation= action.payload.designation ? action.payload.designation :null;
+        state.accountType = action.payload.accountType ?action.payload.accountType:null;
         if(action.payload.logoMetadata){
           state.logoMetadata= action.payload.logoMetadata
           state.logo= action.payload.logo
@@ -54,7 +57,8 @@ export const businessDetailsSlice = createSlice({
         state.website =null;
         state.location =null;
         state.logoMetadata = undefined;
-        state.logo= undefined
+        state.logo= undefined;
+        state.accountType= null;
         // console.warn('user loggedin');
     },
     updateLogo:(state,action)=>{
