@@ -71,7 +71,7 @@ const VerifyOtp = ({navigation}:VerifyOtpProps) => {
   }
   useEffect(() => {
     const subscriber = Auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    // return subscriber; // unsubscribe on unmount
   }, []);
 
   useEffect(() => {

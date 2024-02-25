@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, StatusBar, FlatList, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { colors } from '../../utils/constants';
 import FontAwesomeIcons from "react-native-vector-icons/FontAwesome"
 import FontAwesomeIcons5 from "react-native-vector-icons/FontAwesome5"
@@ -76,13 +76,17 @@ const BusinessDetails = () => {
 
   console.log(businessData);
   const handleLogout=async()=>{
-    // await Auth().signOut();
-    await logoutDispatch(clearBusinessDetails());
-    await logoutDispatch(logoutUser());
+    await Auth().signOut();
+    logoutDispatch(clearBusinessDetails());
+    logoutDispatch(logoutUser());
   }
   const navigateToEditDetails=()=>{
     navigation.navigate('EditBusinessDetails');
   }
+  useEffect(()=>{
+    const user = Auth().currentUser
+    console.log('current User',user);
+  },[])
   const logo = (businessData.logo ? businessData.logo:'https://www.bootdey.com/img/Content/avatar/avatar1.png')
   console.log(businessData.logo)
   return (

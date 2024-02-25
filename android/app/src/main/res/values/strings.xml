@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Webgraphagency</string>
+    <string name="facebook_app_id">7073996429384287</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">3b936a522349e8392b3fc18d419b3442</string>
 </resources>

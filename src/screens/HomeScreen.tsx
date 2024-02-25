@@ -7,31 +7,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
-import {RootStackParamList} from '../navigation/appNavigation';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {useRoute} from '@react-navigation/native';
 import {colors} from '../utils/constants';
 import HeaderBar from './components/HeaderBar';
 import ThemeHeading from './components/ThemeHeading';
-import LinearGradient from 'react-native-linear-gradient';
 import AccountOverview from './components/AccountOverview';
 import LeadsSummary from './components/LeadsSummary';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import AdCard from './components/AdCard';
-import Animated, {
-  FadeInLeft,
-  FadeInRight,
-  FadeInUp,
-  FadeOutDown,
-  FadeOutLeft,
-} from 'react-native-reanimated';
 import {RootState} from '../redux/store/store';
 import {useDispatch, useSelector} from 'react-redux';
 import firestore from "@react-native-firebase/firestore"
 import CheckInternet from './CheckInternet';
 import { addBusinessDetails } from '../redux/features/businessDetailsSlice';
 import { getToken } from '../utils/firebase/CommonUtils';
+import { LoginButton, AccessToken, Profile } from 'react-native-fbsdk-next';
 // import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 
 interface HomeScreenProps {
@@ -45,7 +34,6 @@ const HomeScreen = (props: HomeScreenProps) => {
   // console.warn(auth().currentUser?.uid)
 
   useEffect(()=>{
-
     const getBusinessData=async ()=>{
       const fcmtoken= getToken();
       
@@ -197,6 +185,36 @@ const HomeScreen = (props: HomeScreenProps) => {
                 <AdCard />
                 <AdCard />
               </View>
+            </View>
+            <View>
+            <LoginButton
+          onLoginFinished={
+            (error:any, result:any) => {
+              if (error) {
+                console.log("login has error: " + result.error)
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.")
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data:any) => {
+                    console.log(data.accessToken.toString())
+                  }
+                  )
+                }
+                const currentProfile = Profile.getCurrentProfile().then(
+                  function(currentProfile:any) {
+                    if (currentProfile) {
+                      console.log("The current logged user is: " +
+                        currentProfile.name
+                        + ". His profile id is: " +
+                        currentProfile.userID
+                      );
+                    }
+                  }
+                );
+              }
+            }
+            onLogoutFinished={() => console.log("logout.")}/>
             </View>
           </ScrollView>
       </View>

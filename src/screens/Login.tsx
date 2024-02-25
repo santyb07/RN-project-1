@@ -65,6 +65,10 @@ const Login = ({navigation}:LoginScreenProps) => {
     }
     // console.warn(number)
   }
+  useEffect(()=>{
+    const user = auth().currentUser
+    console.log('current User',user);
+  },[])
 
   
   return (

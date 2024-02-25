@@ -14,7 +14,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntIcons from 'react-native-vector-icons/AntDesign';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import IonicAwesomeIcons from 'react-native-vector-icons/Ionicons';
-
 import {colors} from '../../utils/constants';
 import {Button, Slider} from '@rneui/base';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -246,7 +245,7 @@ const ChangeFrame=()=>{
             {businessData.logo && logoVisible && (
               <Image
                 source={{uri: businessData.logo}}
-                style={{minHeight: logoSize.height, minWidth:logoSize.width,aspectRatio:aspectRatio}}
+                style={{minHeight: logoSize.height, minWidth:logoSize.width,aspectRatio:aspectRatio,backgroundColor:'transparent'}}
                 // style={{
                 //   width: logoSize.width, // Adjusted width
                 //   height: 'auto', // Auto height based on aspect ratio
